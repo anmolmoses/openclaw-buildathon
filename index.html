@@ -33,6 +33,189 @@
             overflow-x: hidden;
         }
 
+        /* OVERLAY */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+
+        /* SIDE PANEL */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(560px, 90vw);
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .side-panel.active { transform: translateX(0); }
+
+        .panel-header {
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+
+        .panel-header .panel-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .panel-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .panel-close:hover { border-color: var(--accent); color: var(--accent); }
+
+        .panel-body {
+            padding: 28px;
+            flex: 1;
+        }
+
+        .panel-body h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .panel-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .panel-meta .pill {
+            font-size: 0.72rem;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .panel-body .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin: 28px 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-body .desc {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .panel-body ul {
+            padding-left: 20px;
+            margin: 12px 0;
+        }
+
+        .panel-body ul li {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .panel-body ul li strong {
+            color: var(--text);
+        }
+
+        .panel-body .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .panel-body .tech-tag {
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 10px;
+            background: var(--surface2);
+            color: var(--cyan);
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .panel-body .example-box {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .panel-body .example-box::before {
+            content: '💡 ';
+        }
+
+        .panel-nav {
+            display: flex;
+            gap: 8px;
+            padding: 20px 28px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            position: sticky;
+            bottom: 0;
+        }
+
+        .panel-nav button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .panel-nav button:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* HERO */
         .hero {
             position: relative;
             padding: 80px 40px 60px;
@@ -178,6 +361,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .card:hover {
@@ -237,6 +421,18 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .card .click-hint {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .card:hover .click-hint { opacity: 1; }
+
         .bonus-section {
             margin-top: 80px;
             padding-top: 60px;
@@ -276,11 +472,13 @@
             display: flex;
             gap: 12px;
             align-items: flex-start;
+            cursor: pointer;
         }
 
         .bonus-item:hover {
             border-color: var(--purple);
             background: var(--surface2);
+            transform: translateY(-1px);
         }
 
         .bonus-num {
@@ -313,9 +511,7 @@
             gap: 10px;
         }
 
-        .bonus-cat-header:first-child {
-            margin-top: 0;
-        }
+        .bonus-cat-header:first-child { margin-top: 0; }
 
         footer {
             text-align: center;
@@ -362,14 +558,31 @@
             .stats-bar { gap: 20px; flex-wrap: wrap; }
             .cards { grid-template-columns: 1fr; }
             .bonus-grid { grid-template-columns: 1fr; }
+            .side-panel { width: 100vw; }
         }
     </style>
 </head>
 <body>
 
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+
+<!-- SIDE PANEL -->
+<div class="side-panel" id="sidePanel">
+    <div class="panel-header">
+        <span class="panel-num" id="panelNum">#01</span>
+        <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+    <div class="panel-nav">
+        <button onclick="navigatePanel(-1)">← Previous</button>
+        <button onclick="navigatePanel(1)">Next →</button>
+    </div>
+</div>
+
 <div class="hero">
     <h1>🦞 OpenClaw Buildathon</h1>
-    <p class="subtitle">70 problem statements to build the future of AI agents. Pick one. Ship it. Win.</p>
+    <p class="subtitle">70 problem statements to build the future of AI agents. Click any card to dive deep.</p>
     <span class="badge">February 2026 — clawhub.com</span>
 </div>
 
@@ -382,307 +595,312 @@
 <div class="container">
 
     <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterCards('all')">All</button>
-        <button class="filter-btn" onclick="filterCards('easy')">🟢 Easy</button>
-        <button class="filter-btn" onclick="filterCards('medium')">🟡 Medium</button>
-        <button class="filter-btn" onclick="filterCards('hard')">🔴 Hard</button>
+        <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+        <button class="filter-btn" onclick="filterCards('easy', this)">🟢 Easy</button>
+        <button class="filter-btn" onclick="filterCards('medium', this)">🟡 Medium</button>
+        <button class="filter-btn" onclick="filterCards('hard', this)">🔴 Hard</button>
     </div>
 
-    <!-- CATEGORY 1: Personal AI Agent -->
+    <!-- CATEGORY 1 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(255,77,77,0.1);">🤖</div>
-            <div>
-                <h2>Personal AI Agent</h2>
-            </div>
+            <div><h2>Personal AI Agent</h2></div>
             <span class="count">4 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="1" onclick="openPanel(1)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#01 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>AI Life Copilot</h3>
-                <p>Build an agent that manages your calendar, emails, finances, and health goals through a single chat interface. It should proactively remind, suggest, and automate — not just respond.</p>
+                <p>Build an agent that manages your calendar, emails, finances, and health goals through a single chat interface.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">multi-channel</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="2" onclick="openPanel(2)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#02 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Context-Aware Morning Briefing</h3>
-                <p>An agent that delivers a personalized daily briefing at your preferred time — weather, calendar, news topics you care about, unread emails, and tasks — adapting to your schedule and mood patterns.</p>
+                <p>An agent that delivers a personalized daily briefing at your preferred time — weather, calendar, news, tasks.</p>
                 <div class="tags"><span class="tag">cron</span><span class="tag">web-search</span><span class="tag">skill</span></div>
             </div>
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="3" onclick="openPanel(3)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#03 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>AI Memory Palace</h3>
-                <p>A skill that gives your agent perfect long-term memory with semantic search, auto-categorization, and the ability to surface relevant past conversations contextually — like a second brain that actually works.</p>
+                <p>A skill that gives your agent perfect long-term memory with semantic search and auto-categorization.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">RAG</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="4" onclick="openPanel(4)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#04 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Relationship Manager</h3>
-                <p>An agent that tracks your relationships — birthdays, last conversations, shared interests — and proactively suggests reaching out, gift ideas, or conversation starters. A CRM for your personal life.</p>
+                <p>An agent that tracks your relationships — birthdays, last conversations, shared interests — and proactively suggests reaching out.</p>
                 <div class="tags"><span class="tag">memory</span><span class="tag">cron</span><span class="tag">contacts</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 2: Developer Tools -->
+    <!-- CATEGORY 2 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(68,138,255,0.1);">⚡</div>
-            <div>
-                <h2>Developer Tools</h2>
-            </div>
+            <div><h2>Developer Tools</h2></div>
             <span class="count">3 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="5" onclick="openPanel(5)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#05 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>Git Autopilot</h3>
-                <p>An agent that monitors your repos, reviews PRs with real feedback, auto-fixes CI failures, suggests refactors, and can be told "ship it" to handle the entire merge-deploy pipeline via chat.</p>
+                <p>An agent that monitors repos, reviews PRs, auto-fixes CI failures, and handles merge-deploy via chat.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">exec</span><span class="tag">github-api</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="6" onclick="openPanel(6)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#06 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Incident Response Bot</h3>
-                <p>A skill that monitors server health, detects anomalies, auto-diagnoses issues, and either fixes them or escalates with a clear RCA — all through your messaging app of choice.</p>
+                <p>Monitors server health, detects anomalies, auto-diagnoses issues, and escalates with a clear RCA.</p>
                 <div class="tags"><span class="tag">exec</span><span class="tag">cron</span><span class="tag">node</span></div>
             </div>
-            <div class="card" data-diff="easy">
+            <div class="card" data-diff="easy" data-id="7" onclick="openPanel(7)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#07 <span class="difficulty diff-easy">EASY</span></div>
                 <h3>Documentation Generator</h3>
-                <p>Point it at a codebase and it generates beautiful, up-to-date documentation. Runs on cron to detect code changes and auto-update docs. Publishes to a hosted page.</p>
+                <p>Point it at a codebase — it generates beautiful docs, auto-updates on changes, publishes to a hosted page.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">exec</span><span class="tag">canvas</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 3: Automation & Workflows -->
+    <!-- CATEGORY 3 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(0,230,118,0.1);">🔄</div>
-            <div>
-                <h2>Automation & Workflows</h2>
-            </div>
+            <div><h2>Automation & Workflows</h2></div>
             <span class="count">3 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="8" onclick="openPanel(8)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#08 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>AI Zapier Killer</h3>
-                <p>Build a natural-language workflow engine on OpenClaw. "When someone emails me an invoice, extract the amount, log it to my spreadsheet, and send a thank you." No code, just words.</p>
+                <p>Natural-language workflow engine. "When someone emails me an invoice, extract it, log it, send a thank you."</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">browser</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="9" onclick="openPanel(9)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#09 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Multi-Platform Social Manager</h3>
-                <p>An agent that drafts, schedules, and posts content across Twitter, LinkedIn, and Reddit. Analyzes engagement, suggests optimal posting times, and responds to comments — all from one chat.</p>
+                <p>Draft, schedule, and post content across Twitter, LinkedIn, Reddit. Analyze engagement from one chat.</p>
                 <div class="tags"><span class="tag">browser</span><span class="tag">cron</span><span class="tag">multi-channel</span></div>
             </div>
-            <div class="card" data-diff="easy">
+            <div class="card" data-diff="easy" data-id="10" onclick="openPanel(10)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#10 <span class="difficulty diff-easy">EASY</span></div>
                 <h3>Smart Home Commander</h3>
-                <p>A skill that bridges OpenClaw to Home Assistant / smart devices. "Turn off the lights, set AC to 24, and start my sleep playlist" — all through WhatsApp or Telegram.</p>
+                <p>Bridge OpenClaw to Home Assistant / smart devices. Control your home via WhatsApp or Telegram.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">node</span><span class="tag">API</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 4: Learning & Research -->
+    <!-- CATEGORY 4 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(179,136,255,0.1);">📚</div>
-            <div>
-                <h2>Learning & Research</h2>
-            </div>
+            <div><h2>Learning & Research</h2></div>
             <span class="count">3 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="11" onclick="openPanel(11)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#11 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Research Paper Digester</h3>
-                <p>Feed it arxiv links or topics — it reads papers, extracts key findings, builds a knowledge graph, and gives you a weekly digest of breakthroughs in your field. Searchable memory across all papers.</p>
+                <p>Feed it arxiv links — it reads papers, extracts findings, builds a knowledge graph, gives weekly digests.</p>
                 <div class="tags"><span class="tag">web-fetch</span><span class="tag">memory</span><span class="tag">cron</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="12" onclick="openPanel(12)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#12 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Adaptive Tutor</h3>
-                <p>An AI tutor that creates personalized learning paths, generates practice problems, tracks your weak areas with spaced repetition, and quizzes you at optimal intervals via chat.</p>
+                <p>AI tutor with personalized paths, practice problems, spaced repetition, and quizzes via chat.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">cron</span></div>
             </div>
-            <div class="card" data-diff="easy">
+            <div class="card" data-diff="easy" data-id="13" onclick="openPanel(13)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#13 <span class="difficulty diff-easy">EASY</span></div>
                 <h3>Pocket Debate Partner</h3>
-                <p>An agent that argues the opposite side of any position you take. Uses web search for real citations and evidence. Great for sharpening thinking and exploring ideas you'd never consider.</p>
+                <p>An agent that argues the opposite side of any position. Real citations. Sharpens your thinking.</p>
                 <div class="tags"><span class="tag">web-search</span><span class="tag">skill</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 5: Community & Social -->
+    <!-- CATEGORY 5 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(255,128,171,0.1);">👥</div>
-            <div>
-                <h2>Community & Social</h2>
-            </div>
+            <div><h2>Community & Social</h2></div>
             <span class="count">3 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="14" onclick="openPanel(14)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#14 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>AI Dungeon Master</h3>
-                <p>A multi-player text RPG run entirely through a Discord/Telegram group. The agent manages game state, NPC dialogue, combat mechanics, maps, and persistent world — with real-time multiplayer support.</p>
+                <p>Multi-player text RPG in Discord/Telegram. Game state, NPC dialogue, combat, persistent world.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">multi-user</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="15" onclick="openPanel(15)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#15 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Community Concierge</h3>
-                <p>An agent that onboards new Discord/Telegram members, answers FAQs from docs, moderates content, summarizes discussions, and generates weekly community digests — the ultimate community manager.</p>
+                <p>Onboards members, answers FAQs, moderates, summarizes discussions, generates weekly digests.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">web-fetch</span><span class="tag">cron</span></div>
             </div>
-            <div class="card" data-diff="easy">
+            <div class="card" data-diff="easy" data-id="16" onclick="openPanel(16)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#16 <span class="difficulty diff-easy">EASY</span></div>
                 <h3>Group Expense Splitter</h3>
-                <p>A group chat agent that tracks shared expenses in real-time. "I paid ₹500 for dinner" — it logs, splits, tracks who owes whom, sends reminders, and generates monthly reports.</p>
+                <p>Track shared expenses in group chat. Splits, tracks balances, sends reminders, monthly reports.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">group-chat</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 6: Health & Wellness -->
+    <!-- CATEGORY 6 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(24,255,255,0.1);">🧘</div>
-            <div>
-                <h2>Health & Wellness</h2>
-            </div>
+            <div><h2>Health & Wellness</h2></div>
             <span class="count">2 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="17" onclick="openPanel(17)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#17 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>AI Nutritionist</h3>
-                <p>Snap a photo of your meal → agent identifies food, estimates calories/macros, tracks your daily intake, suggests what to eat next to hit goals, and creates weekly meal plans with grocery lists.</p>
+                <p>Photo your meal → identifies food, tracks calories/macros, suggests meals, creates grocery lists.</p>
                 <div class="tags"><span class="tag">image</span><span class="tag">memory</span><span class="tag">cron</span></div>
             </div>
-            <div class="card" data-diff="medium">
+            <div class="card" data-diff="medium" data-id="18" onclick="openPanel(18)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#18 <span class="difficulty diff-medium">MEDIUM</span></div>
                 <h3>Mental Health Check-in Agent</h3>
-                <p>A compassionate agent that does daily mood check-ins, tracks patterns over time, suggests coping strategies, detects concerning trends, and knows when to recommend professional help.</p>
+                <p>Daily mood check-ins, pattern tracking, coping strategies, and knows when to recommend professional help.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">memory</span></div>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY 7: Finance & Productivity -->
+    <!-- CATEGORY 7 -->
     <div class="category">
         <div class="category-header">
             <div class="category-icon" style="background: rgba(255,215,0,0.1);">💰</div>
-            <div>
-                <h2>Finance & Productivity</h2>
-            </div>
+            <div><h2>Finance & Productivity</h2></div>
             <span class="count">2 problems</span>
         </div>
         <div class="cards">
-            <div class="card" data-diff="hard">
+            <div class="card" data-diff="hard" data-id="19" onclick="openPanel(19)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#19 <span class="difficulty diff-hard">HARD</span></div>
                 <h3>Personal Finance Analyst</h3>
-                <p>Connect bank SMS/email alerts → agent categorizes spending, detects subscriptions you forgot about, projects monthly burn rate, suggests savings strategies, and alerts you before overspending.</p>
+                <p>Categorizes spending from bank alerts, detects forgotten subscriptions, projects burn rate, alerts overspending.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">cron</span></div>
             </div>
-            <div class="card" data-diff="easy">
+            <div class="card" data-diff="easy" data-id="20" onclick="openPanel(20)">
+                <span class="click-hint">click to expand →</span>
                 <div class="number">#20 <span class="difficulty diff-easy">EASY</span></div>
                 <h3>Meeting Minutes Agent</h3>
-                <p>Send a voice note or paste a transcript → agent generates structured minutes, action items, deadlines, and follow-up reminders. Tracks action item completion across meetings.</p>
+                <p>Voice note or transcript → structured minutes, action items, deadlines, follow-up reminders.</p>
                 <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">tts</span></div>
             </div>
         </div>
     </div>
 
-    <!-- BONUS 50 IDEAS -->
+    <!-- BONUS 50 -->
     <div class="bonus-section">
         <h2>⚡ 50 Bonus Ideas</h2>
-        <p class="bonus-subtitle">More concepts to spark inspiration. Mix, match, and make them yours.</p>
+        <p class="bonus-subtitle">Click any idea for the full breakdown.</p>
 
         <div class="bonus-cat-header">🤖 Personal AI & Lifestyle</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">21</span><div><h4>Dream Journal Analyzer</h4><p>Log dreams via voice/text → agent finds patterns, recurring symbols, and emotional themes over time.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">22</span><div><h4>Wardrobe Stylist</h4><p>Photo your closet → agent suggests outfits based on weather, calendar events, and style preferences.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">23</span><div><h4>Travel Planner Agent</h4><p>Give it dates and budget → full itinerary with flights, hotels, activities, local tips, and real-time alerts.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">24</span><div><h4>Recipe Generator from Fridge Photos</h4><p>Snap your fridge → agent identifies ingredients and suggests recipes you can actually make right now.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">25</span><div><h4>Pet Care Assistant</h4><p>Track vet visits, medications, feeding schedules, and behavioral changes for your pets via chat.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">26</span><div><h4>Habit Streak Gamifier</h4><p>Like Solo Leveling but customizable — any habit system with leaderboards, multiplayer challenges, and rewards.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">27</span><div><h4>Personal Shopper Agent</h4><p>Tell it what you want → it searches deals across sites, compares prices, tracks price drops, alerts on sales.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">28</span><div><h4>Movie/Show Recommender</h4><p>Learns your taste over time, tracks what you've watched, and suggests with trailers and reviews.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(21)"><span class="bonus-num">21</span><div><h4>Dream Journal Analyzer</h4><p>Log dreams via voice/text → agent finds patterns, recurring symbols, and emotional themes.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(22)"><span class="bonus-num">22</span><div><h4>Wardrobe Stylist</h4><p>Photo your closet → suggests outfits based on weather, events, and style preferences.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(23)"><span class="bonus-num">23</span><div><h4>Travel Planner Agent</h4><p>Dates + budget → full itinerary with flights, hotels, activities, and real-time alerts.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(24)"><span class="bonus-num">24</span><div><h4>Recipe from Fridge Photo</h4><p>Snap your fridge → identifies ingredients, suggests recipes you can make right now.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(25)"><span class="bonus-num">25</span><div><h4>Pet Care Assistant</h4><p>Track vet visits, meds, feeding schedules, and behavioral changes for pets via chat.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(26)"><span class="bonus-num">26</span><div><h4>Habit Streak Gamifier</h4><p>Customizable habit RPG with leaderboards, multiplayer challenges, and rewards.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(27)"><span class="bonus-num">27</span><div><h4>Personal Shopper Agent</h4><p>Searches deals, compares prices, tracks drops, alerts on sales for stuff you want.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(28)"><span class="bonus-num">28</span><div><h4>Movie/Show Recommender</h4><p>Learns your taste, tracks watched content, suggests with trailers and reviews.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">⚡ Developer & Engineering</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">29</span><div><h4>API Health Monitor</h4><p>Monitors your APIs, pings endpoints on cron, alerts via chat when latency spikes or errors occur.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">30</span><div><h4>Database Query Agent</h4><p>"How many users signed up last week?" → agent writes SQL, runs it safely, returns formatted results.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">31</span><div><h4>Log Analyzer & Alert System</h4><p>Watches log files, detects anomalies with pattern recognition, sends smart alerts with suggested fixes.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">32</span><div><h4>Dependency Vulnerability Scanner</h4><p>Scans your projects for outdated/vulnerable dependencies and auto-creates PRs with safe updates.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">33</span><div><h4>CLI Tool Builder</h4><p>Describe a CLI tool in natural language → agent generates, tests, and packages it. "Make me a CLI that converts CSV to JSON."</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">34</span><div><h4>Multi-Repo Changelog Generator</h4><p>Aggregates commits across repos, generates human-readable changelogs, posts to Slack/Discord on release.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">35</span><div><h4>Infrastructure as Chat</h4><p>Deploy, scale, and manage cloud infra through chat. "Spin up a 2-core instance on Hetzner with nginx."</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">36</span><div><h4>Code Review Coach</h4><p>Reviews your PRs not just for bugs, but teaches you WHY something is bad and how to improve.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(29)"><span class="bonus-num">29</span><div><h4>API Health Monitor</h4><p>Pings endpoints on cron, alerts via chat on latency spikes or errors.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(30)"><span class="bonus-num">30</span><div><h4>Database Query Agent</h4><p>"How many users signed up last week?" → writes SQL, runs safely, returns results.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(31)"><span class="bonus-num">31</span><div><h4>Log Analyzer & Alerter</h4><p>Watches logs, detects anomalies, sends smart alerts with suggested fixes.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(32)"><span class="bonus-num">32</span><div><h4>Dependency Vuln Scanner</h4><p>Scans for vulnerable deps, auto-creates PRs with safe updates.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(33)"><span class="bonus-num">33</span><div><h4>CLI Tool Builder</h4><p>Describe a CLI in English → agent generates, tests, and packages it.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(34)"><span class="bonus-num">34</span><div><h4>Multi-Repo Changelog</h4><p>Aggregates commits across repos, generates changelogs, posts on release.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(35)"><span class="bonus-num">35</span><div><h4>Infrastructure as Chat</h4><p>Deploy and manage cloud infra through chat commands.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(36)"><span class="bonus-num">36</span><div><h4>Code Review Coach</h4><p>Reviews PRs and teaches you WHY something is bad, not just what.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">🔄 Automation & Integration</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">37</span><div><h4>Email Triage Agent</h4><p>Reads your inbox, categorizes by urgency, drafts responses, archives junk — you just approve or edit.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">38</span><div><h4>Cross-Platform Message Sync</h4><p>Forward important messages between platforms. A WhatsApp message can trigger a Slack alert or Discord post.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">39</span><div><h4>Invoice & Receipt Processor</h4><p>Forward receipts/invoices → auto-extracted, categorized, stored, and summarized for tax time.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">40</span><div><h4>Appointment Scheduler</h4><p>Share your availability link via chat. Agent handles back-and-forth scheduling without Calendly.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">41</span><div><h4>RSS Feed Curator</h4><p>Monitors RSS feeds, filters by your interests, and delivers a daily digest of only what matters.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">42</span><div><h4>File Organizer Agent</h4><p>Watches a folder (Downloads), auto-renames, categorizes, and moves files based on content analysis.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">43</span><div><h4>Web Scraping Orchestrator</h4><p>Natural language web scraping. "Get me all product prices from this page daily and alert if any drop 20%."</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">44</span><div><h4>Bookmark Brain</h4><p>Save links via chat → agent reads, summarizes, tags, and makes them searchable. Never lose a link again.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(37)"><span class="bonus-num">37</span><div><h4>Email Triage Agent</h4><p>Reads inbox, categorizes by urgency, drafts responses, archives junk.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(38)"><span class="bonus-num">38</span><div><h4>Cross-Platform Sync</h4><p>Forward important messages between WhatsApp, Slack, Discord, Telegram.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(39)"><span class="bonus-num">39</span><div><h4>Invoice Processor</h4><p>Forward receipts → auto-extracted, categorized, stored for tax time.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(40)"><span class="bonus-num">40</span><div><h4>Appointment Scheduler</h4><p>Handles scheduling back-and-forth via chat. No Calendly needed.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(41)"><span class="bonus-num">41</span><div><h4>RSS Feed Curator</h4><p>Monitors feeds, filters by interest, delivers daily digest of what matters.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(42)"><span class="bonus-num">42</span><div><h4>File Organizer Agent</h4><p>Watches Downloads, auto-renames and sorts files by content analysis.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(43)"><span class="bonus-num">43</span><div><h4>Web Scraping Orchestrator</h4><p>Natural language scraping with price alerts and change detection.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(44)"><span class="bonus-num">44</span><div><h4>Bookmark Brain</h4><p>Save links via chat → reads, summarizes, tags, makes searchable.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">📚 Learning & Knowledge</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">45</span><div><h4>Flashcard Generator</h4><p>Send notes/textbooks → agent generates Anki-style flashcards and quizzes you via chat on a schedule.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">46</span><div><h4>Language Learning Buddy</h4><p>Conversational language practice with grammar correction, vocabulary building, and daily challenges.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">47</span><div><h4>Book Club Agent</h4><p>Group reading tracker — chapters, discussions, quotes, and insights shared in a group chat on schedule.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">48</span><div><h4>Wikipedia Rabbit Hole</h4><p>Give it a topic → it builds a curated learning path with articles, videos, and quizzes. Progressive depth.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">49</span><div><h4>Podcast Summarizer</h4><p>Drop a podcast link → agent transcribes, summarizes key points, extracts action items and quotes.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">50</span><div><h4>Daily Coding Challenge</h4><p>Sends a LeetCode-style problem each morning, hints if stuck, reviews your solution, tracks progress.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(45)"><span class="bonus-num">45</span><div><h4>Flashcard Generator</h4><p>Notes → Anki-style cards, quizzes you via chat on a spaced schedule.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(46)"><span class="bonus-num">46</span><div><h4>Language Learning Buddy</h4><p>Conversational practice with grammar correction and daily challenges.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(47)"><span class="bonus-num">47</span><div><h4>Book Club Agent</h4><p>Group reading tracker with chapters, discussions, and scheduled insights.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(48)"><span class="bonus-num">48</span><div><h4>Wikipedia Rabbit Hole</h4><p>Topic → curated learning path with articles, videos, quizzes.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(49)"><span class="bonus-num">49</span><div><h4>Podcast Summarizer</h4><p>Link → transcribe, summarize, extract action items and quotes.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(50)"><span class="bonus-num">50</span><div><h4>Daily Coding Challenge</h4><p>Morning problem, hints if stuck, reviews solution, tracks progress.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">👥 Community & Collaboration</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">51</span><div><h4>Standup Bot</h4><p>Collects async standups from team members via DM, compiles and posts a formatted summary to the channel.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">52</span><div><h4>Event Organizer Agent</h4><p>Plan events via chat — RSVPs, reminders, polls for timing, venue suggestions, and post-event feedback.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">53</span><div><h4>Skill Swap Marketplace</h4><p>Match community members who want to teach/learn skills. Agent facilitates introductions and scheduling.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">54</span><div><h4>Anonymous Feedback Collector</h4><p>Agent collects anonymous feedback from team members, summarizes themes, and delivers insights privately.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">55</span><div><h4>Trivia Night Host</h4><p>Runs scheduled trivia games in group chats with scoring, leaderboards, and themed rounds.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">56</span><div><h4>Open Source Contribution Finder</h4><p>Matches your skills to good-first-issues across GitHub repos. Daily suggestions with context and difficulty.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(51)"><span class="bonus-num">51</span><div><h4>Standup Bot</h4><p>Async standups via DM, compiled summary posted to channel.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(52)"><span class="bonus-num">52</span><div><h4>Event Organizer Agent</h4><p>RSVPs, reminders, polls, venue suggestions, post-event feedback.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(53)"><span class="bonus-num">53</span><div><h4>Skill Swap Marketplace</h4><p>Match people who want to teach/learn, facilitate intros and scheduling.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(54)"><span class="bonus-num">54</span><div><h4>Anonymous Feedback</h4><p>Collects anonymous team feedback, summarizes themes privately.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(55)"><span class="bonus-num">55</span><div><h4>Trivia Night Host</h4><p>Scheduled trivia in group chats with scoring and leaderboards.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(56)"><span class="bonus-num">56</span><div><h4>OSS Contribution Finder</h4><p>Matches your skills to good-first-issues across GitHub repos daily.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">🧘 Health, Finance & Life</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">57</span><div><h4>Sleep Coach</h4><p>Tracks sleep patterns via check-ins, suggests improvements, adjusts your morning alarm/routine accordingly.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">58</span><div><h4>Water Intake Tracker</h4><p>Gentle reminders throughout the day, tracks intake, adjusts based on weather and activity level.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">59</span><div><h4>Meditation Guide</h4><p>Personalized meditation sessions via voice notes, adapting technique and duration to your stress levels.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">60</span><div><h4>Crypto Portfolio Tracker</h4><p>Monitors your holdings, alerts on significant moves, tracks P&L, and provides market sentiment analysis.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">61</span><div><h4>Subscription Audit Agent</h4><p>Scans your emails for subscription confirmations, lists all active subscriptions, and helps you cancel unused ones.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">62</span><div><h4>Workout Planner</h4><p>Generates workout plans based on goals/equipment, tracks sets/reps via chat, adjusts based on progress.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">63</span><div><h4>Tax Prep Assistant</h4><p>Collects documents throughout the year, categorizes deductions, estimates liability, and preps filing data.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(57)"><span class="bonus-num">57</span><div><h4>Sleep Coach</h4><p>Tracks sleep patterns, suggests improvements, adjusts routines.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(58)"><span class="bonus-num">58</span><div><h4>Water Intake Tracker</h4><p>Gentle reminders, tracks intake, adjusts for weather and activity.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(59)"><span class="bonus-num">59</span><div><h4>Meditation Guide</h4><p>Personalized sessions via voice notes, adapting to stress levels.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(60)"><span class="bonus-num">60</span><div><h4>Crypto Portfolio Tracker</h4><p>Monitors holdings, alerts on moves, tracks P&L, market sentiment.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(61)"><span class="bonus-num">61</span><div><h4>Subscription Audit</h4><p>Scans emails for subscriptions, lists all active ones, helps cancel unused.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(62)"><span class="bonus-num">62</span><div><h4>Workout Planner</h4><p>Plans based on goals/equipment, tracks via chat, adjusts over time.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(63)"><span class="bonus-num">63</span><div><h4>Tax Prep Assistant</h4><p>Collects docs year-round, categorizes deductions, estimates liability.</p></div></div>
         </div>
 
         <div class="bonus-cat-header">🎨 Creative & Fun</div>
         <div class="bonus-grid">
-            <div class="bonus-item"><span class="bonus-num">64</span><div><h4>Collaborative Story Writer</h4><p>Group chat storytelling — each person adds a paragraph, agent maintains continuity and adds plot twists.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">65</span><div><h4>Meme Generator</h4><p>Describe a meme concept → agent finds the right template, adds text, and delivers the image.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">66</span><div><h4>Music Discovery Agent</h4><p>Learns your taste, searches new releases and underground tracks, delivers weekly playlists with Spotify links.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">67</span><div><h4>Daily Creative Prompt</h4><p>Sends writing/art/music prompts daily, collects submissions, and gives thoughtful feedback.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">68</span><div><h4>Voice Character Agent</h4><p>An agent with distinct voice personas — pirate, Yoda, noir detective — that maintains character while being helpful.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">69</span><div><h4>Time Capsule Agent</h4><p>Write messages to your future self. Agent delivers them on the scheduled date with context from that period.</p></div></div>
-            <div class="bonus-item"><span class="bonus-num">70</span><div><h4>AI Radio DJ</h4><p>A scheduled agent that curates and "broadcasts" music recommendations with DJ-style commentary via TTS.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(64)"><span class="bonus-num">64</span><div><h4>Collaborative Story Writer</h4><p>Group storytelling — each person adds a paragraph, agent maintains continuity.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(65)"><span class="bonus-num">65</span><div><h4>Meme Generator</h4><p>Describe a concept → agent finds template, adds text, delivers image.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(66)"><span class="bonus-num">66</span><div><h4>Music Discovery Agent</h4><p>Learns taste, searches releases, delivers weekly playlists with links.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(67)"><span class="bonus-num">67</span><div><h4>Daily Creative Prompt</h4><p>Sends writing/art/music prompts, collects work, gives feedback.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(68)"><span class="bonus-num">68</span><div><h4>Voice Character Agent</h4><p>Distinct voice personas — pirate, Yoda, detective — while staying helpful.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(69)"><span class="bonus-num">69</span><div><h4>Time Capsule Agent</h4><p>Write to future self. Delivered on scheduled date with period context.</p></div></div>
+            <div class="bonus-item" onclick="openPanel(70)"><span class="bonus-num">70</span><div><h4>AI Radio DJ</h4><p>Curates music recs with DJ-style TTS commentary on schedule.</p></div></div>
         </div>
     </div>
-
 </div>
 
 <footer>
@@ -691,10 +909,1104 @@
 </footer>
 
 <script>
-function filterCards(difficulty) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+const problems = {
+    1: {
+        title: "AI Life Copilot",
+        difficulty: "hard",
+        category: "Personal AI Agent",
+        tags: ["skill", "cron", "multi-channel", "memory", "browser"],
+        description: "Build a unified AI assistant that acts as your life's operating system. It connects to your calendar, email, banking notifications, health trackers, and task managers — all accessible through a single chat interface on WhatsApp, Telegram, or Discord.",
+        features: [
+            "<strong>Calendar Intelligence:</strong> Reads your Google/Outlook calendar, warns about conflicts, suggests optimal meeting times, and auto-blocks focus time.",
+            "<strong>Email Triage:</strong> Scans inbox periodically, categorizes by urgency (action required / FYI / spam), drafts responses you approve with a thumbs up.",
+            "<strong>Financial Pulse:</strong> Parses bank SMS/email alerts, categorizes spending in real-time, warns when you're approaching budget limits.",
+            "<strong>Health Nudges:</strong> Integrates with fitness data to remind you to move, hydrate, or sleep based on your patterns.",
+            "<strong>Proactive Mode:</strong> Doesn't wait to be asked — surfaces relevant info before you need it. 'You have a 3pm meeting but no lunch blocked — want me to order something?'"
+        ],
+        example: "Imagine texting your agent: 'What does my week look like?' and getting a beautiful summary of meetings, deadlines, expected expenses, and a weather-aware suggestion for your Thursday outdoor lunch.",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Web Fetch", "Browser Automation", "Memory Files", "Multi-channel Messaging"]
+    },
+    2: {
+        title: "Context-Aware Morning Briefing",
+        difficulty: "medium",
+        category: "Personal AI Agent",
+        tags: ["cron", "web-search", "skill", "tts"],
+        description: "An agent that wakes up before you do and prepares a personalized daily briefing delivered at your preferred time. Not a generic news dump — it knows what YOU care about and adapts to your schedule.",
+        features: [
+            "<strong>Weather + Outfit:</strong> Local forecast with clothing suggestions based on your calendar (outdoor meeting? bring an umbrella).",
+            "<strong>Calendar Preview:</strong> Today's meetings with prep notes — who you're meeting, what you discussed last time, what to prepare.",
+            "<strong>News Filter:</strong> Only topics you've expressed interest in. AI, crypto, your favorite sports team — not everything.",
+            "<strong>Task Summary:</strong> Overdue items, today's priorities, and any deadlines approaching this week.",
+            "<strong>Mood Adaptation:</strong> Shorter briefings on busy days, more detailed on light days. Learns your patterns over time."
+        ],
+        example: "'Good morning, sir. It's 22°C and clear — perfect for that outdoor meeting at 2pm. You have 4 meetings today, the tightest gap is 30 min at noon. OpenAI announced GPT-5 overnight — I've saved the key details. Your PR review for AgentForge is still pending.'",
+        techStack: ["Cron Jobs", "Web Search/Fetch", "Memory", "TTS (optional voice delivery)", "Calendar API"]
+    },
+    3: {
+        title: "AI Memory Palace",
+        difficulty: "hard",
+        category: "Personal AI Agent",
+        tags: ["skill", "memory", "RAG", "embeddings", "vector-search"],
+        description: "Solve the biggest problem in AI assistants: memory. Build a skill that gives any OpenClaw agent perfect long-term recall with semantic search, automatic categorization, importance ranking, and contextual surfacing of past conversations.",
+        features: [
+            "<strong>Semantic Storage:</strong> Every conversation automatically indexed with embeddings. Not keyword matching — actual understanding.",
+            "<strong>Auto-Categorization:</strong> Memories tagged by topic (work, health, people, ideas, decisions) without manual effort.",
+            "<strong>Importance Decay:</strong> Recent and frequently-referenced memories rank higher. Old irrelevant stuff fades naturally.",
+            "<strong>Contextual Recall:</strong> When you mention 'that restaurant from last month', the agent finds it instantly across hundreds of conversations.",
+            "<strong>Memory Dashboard:</strong> A canvas-based UI showing your memory graph — connections between people, topics, and decisions.",
+            "<strong>Privacy Controls:</strong> Mark memories as sensitive, set auto-expiry, or create memory 'vaults' that require explicit access."
+        ],
+        example: "'Hey, what did I decide about the database migration?' → Agent searches semantically, finds the conversation from 3 weeks ago, and replies: 'On Jan 28th you decided to go with PostgreSQL over MongoDB because of the complex joins in the reporting module. You also noted to revisit this after the Q2 launch.'",
+        techStack: ["Vector Embeddings", "SQLite/File-based Storage", "OpenClaw Skills", "Canvas UI", "Memory Management"]
+    },
+    4: {
+        title: "Relationship Manager",
+        difficulty: "medium",
+        category: "Personal AI Agent",
+        tags: ["memory", "cron", "contacts", "messaging"],
+        description: "A personal CRM that helps you be a better friend, family member, and colleague. Tracks your relationships, remembers important details, and proactively nudges you to maintain connections that matter.",
+        features: [
+            "<strong>Contact Profiles:</strong> For each person, tracks birthday, interests, last conversation topics, how you met, and shared memories.",
+            "<strong>Relationship Health:</strong> Flags relationships going cold — 'You haven't spoken to Alex in 45 days. Last time you discussed their startup launch.'",
+            "<strong>Birthday & Event Alerts:</strong> Not just 'it's their birthday' but 'Sarah loves hiking gear — here are 3 gift ideas under ₹2000.'",
+            "<strong>Conversation Starters:</strong> Before you reach out, agent suggests topics based on their recent activity or shared interests.",
+            "<strong>Follow-up Tracking:</strong> 'You promised to send Raj that article about Rust. Want me to find it and draft a message?'"
+        ],
+        example: "Monday morning: 'Quick relationship check — Mom's birthday is in 5 days (she mentioned wanting a new kindle). You told Priya you'd review her resume this week. And Arjun's startup launched yesterday — might be nice to congratulate him.'",
+        techStack: ["Memory Files", "Cron Jobs", "Contact Management", "Messaging Integration"]
+    },
+    5: {
+        title: "Git Autopilot",
+        difficulty: "hard",
+        category: "Developer Tools",
+        tags: ["skill", "exec", "github-api", "cron", "browser"],
+        description: "A developer's dream — an AI agent that actively participates in your Git workflow. It monitors repositories, provides intelligent code reviews, auto-fixes CI failures, and can handle the entire merge-to-deploy pipeline when you say 'ship it.'",
+        features: [
+            "<strong>PR Review:</strong> Not just linting — understands your codebase context, catches logic bugs, suggests better patterns, and asks clarifying questions.",
+            "<strong>CI Fix Mode:</strong> When CI fails, agent reads the logs, identifies the issue, pushes a fix commit, and notifies you. No more context-switching for a missing semicolon.",
+            "<strong>Release Management:</strong> 'Ship it' → agent merges PR, updates changelog, bumps version, creates a release tag, and triggers deployment.",
+            "<strong>Repo Watch:</strong> Monitors multiple repos via cron. Morning summary: '3 new PRs on AgentForge, 1 failing CI on the dashboard repo, 2 dependabot alerts.'",
+            "<strong>Conflict Resolution:</strong> Detects merge conflicts early and suggests resolution strategies with full context."
+        ],
+        example: "'Hey, review the latest PR on AgentForge' → Agent reads the diff, comments inline: 'Line 47: This SQL query is vulnerable to injection — use parameterized queries. Line 112: This function duplicates what utils.parseConfig already does. Line 89: Nice optimization on the cache layer 👍'",
+        techStack: ["GitHub API", "Shell Exec", "OpenClaw Skills", "Cron Jobs", "Git CLI"]
+    },
+    6: {
+        title: "Incident Response Bot",
+        difficulty: "medium",
+        category: "Developer Tools",
+        tags: ["exec", "cron", "node", "alerting"],
+        description: "Your on-call engineer that never sleeps. Monitors server health metrics, detects anomalies before they become outages, auto-diagnoses common issues, and escalates with clear root cause analysis when human intervention is needed.",
+        features: [
+            "<strong>Health Polling:</strong> Cron-based checks on CPU, memory, disk, response times, error rates, and custom metrics.",
+            "<strong>Anomaly Detection:</strong> Learns normal patterns and alerts on deviations — not just threshold breaches but trend changes.",
+            "<strong>Auto-Remediation:</strong> For known issues (disk full, zombie processes, expired certs), takes action automatically and reports what it did.",
+            "<strong>RCA Reports:</strong> When escalating, provides timeline, affected services, likely cause, and suggested fix — not just 'server is down.'",
+            "<strong>Runbook Integration:</strong> Reads your runbooks and follows them step-by-step for known incident types."
+        ],
+        example: "3 AM alert: 'Disk usage on prod-web-01 hit 92%. I've identified 4.2GB of old log files in /var/log/app/. Rotated and compressed them — usage now at 67%. Recommend setting up logrotate cron. Want me to configure it?'",
+        techStack: ["Shell Exec", "Cron Jobs", "Node Pairing", "SSH", "Metrics Collection"]
+    },
+    7: {
+        title: "Documentation Generator",
+        difficulty: "easy",
+        category: "Developer Tools",
+        tags: ["skill", "exec", "canvas", "cron"],
+        description: "Point this agent at any codebase and it generates beautiful, comprehensive documentation. Set it on a cron schedule to detect code changes and auto-update docs. Publishes to a hosted page you can share with your team.",
+        features: [
+            "<strong>Code Analysis:</strong> Reads source files, understands structure, extracts function signatures, classes, and relationships.",
+            "<strong>Smart Comments:</strong> Doesn't just list functions — explains what they do, when to use them, and shows usage examples.",
+            "<strong>Auto-Update:</strong> Runs on cron, detects git changes, regenerates only affected sections. Docs never go stale.",
+            "<strong>Beautiful Output:</strong> Generates a styled HTML site (via canvas) with search, navigation, and syntax highlighting.",
+            "<strong>README Generation:</strong> Auto-generates or updates README.md with setup instructions, architecture overview, and API docs."
+        ],
+        example: "Run once: 'Document the AgentForge repo' → Generates a full site at localhost:3000 with Getting Started, Architecture, API Reference, and Contributing guides. Set cron for daily updates.",
+        techStack: ["Shell Exec", "Canvas", "File System", "Cron Jobs", "Git Integration"]
+    },
+    8: {
+        title: "AI Zapier Killer",
+        difficulty: "hard",
+        category: "Automation & Workflows",
+        tags: ["skill", "cron", "browser", "exec", "multi-channel"],
+        description: "Build a natural-language workflow automation engine on OpenClaw. Instead of clicking through Zapier's UI, you describe what you want in plain English and the agent builds, tests, and runs the automation. No code, no drag-and-drop — just words.",
+        features: [
+            "<strong>Natural Language Triggers:</strong> 'When I get an email with an attachment from @company.com, save it to Google Drive and notify me on Telegram.'",
+            "<strong>Multi-Step Chains:</strong> Chain actions across services — email → spreadsheet → notification → calendar event.",
+            "<strong>Browser Actions:</strong> For services without APIs, agent uses browser automation to interact with web UIs.",
+            "<strong>Conditional Logic:</strong> 'Only do X if the email subject contains "invoice" and the amount is over $500.'",
+            "<strong>Workflow Management:</strong> List, pause, edit, and debug workflows via chat. 'Show me all my active workflows' → formatted list with status.",
+            "<strong>Error Handling:</strong> When a workflow fails, agent diagnoses why, suggests fixes, and can auto-retry."
+        ],
+        example: "'Set up a workflow: when someone stars my GitHub repo, grab their profile, add them to my contacts spreadsheet, and send me a Telegram message with their name and bio.' → Agent builds it, tests with a dummy event, confirms it works.",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Browser Automation", "Web Fetch", "Shell Exec", "Multi-channel"]
+    },
+    9: {
+        title: "Multi-Platform Social Manager",
+        difficulty: "medium",
+        category: "Automation & Workflows",
+        tags: ["browser", "cron", "multi-channel", "image"],
+        description: "Manage your entire social media presence from a single chat. Draft content, schedule posts across Twitter, LinkedIn, and Reddit, analyze engagement metrics, and even respond to comments — all without opening a browser.",
+        features: [
+            "<strong>Content Creation:</strong> 'Write a tweet about our new feature launch' → drafts 3 options with different tones for you to pick.",
+            "<strong>Cross-Platform Posting:</strong> Adapts content format per platform — thread for Twitter, professional tone for LinkedIn, casual for Reddit.",
+            "<strong>Scheduling:</strong> 'Post this tomorrow at 10 AM IST' → queued and posted via cron + browser automation.",
+            "<strong>Analytics:</strong> Daily/weekly engagement reports — likes, shares, comments, follower growth, best performing content.",
+            "<strong>Comment Management:</strong> Surfaces important comments/mentions, drafts replies for your approval.",
+            "<strong>Content Calendar:</strong> Maintains a posting schedule, suggests content gaps, and reminds you of upcoming posts."
+        ],
+        example: "'Schedule a thread about OpenClaw for tomorrow morning, then post a condensed version on LinkedIn at noon.' → Agent crafts both versions, shows previews, and queues them.",
+        techStack: ["Browser Automation", "Cron Jobs", "Image Analysis", "Memory", "Multi-channel"]
+    },
+    10: {
+        title: "Smart Home Commander",
+        difficulty: "easy",
+        category: "Automation & Workflows",
+        tags: ["skill", "node", "API", "exec"],
+        description: "Bridge OpenClaw to your smart home ecosystem. Control lights, AC, music, locks, and any IoT device through natural language in your favorite messaging app. Like having Jarvis for your actual home.",
+        features: [
+            "<strong>Device Control:</strong> 'Turn off the lights in the bedroom and set AC to 24°C' → executes via Home Assistant / smart device APIs.",
+            "<strong>Scenes:</strong> 'Movie time' → dims lights, turns on TV, sets AC to 22, closes blinds.",
+            "<strong>Schedules:</strong> 'Turn on porch light at sunset every day' → creates automated cron-based routines.",
+            "<strong>Status Queries:</strong> 'Is the front door locked?' 'What's the temperature in the living room?' → real-time device status.",
+            "<strong>Energy Monitoring:</strong> 'How much power did the AC use this week?' → pulls data from smart plugs/meters.",
+            "<strong>Guest Mode:</strong> 'Set up guest wifi and send the password to Raj on WhatsApp' → configures router, sends message."
+        ],
+        example: "Lying in bed, text your agent: 'Goodnight mode' → Locks all doors, turns off all lights except hallway nightlight, sets AC to sleep mode, enables morning alarm for 6:30 AM.",
+        techStack: ["OpenClaw Skills", "Home Assistant API", "Node Pairing", "Cron Jobs"]
+    },
+    11: {
+        title: "Research Paper Digester",
+        difficulty: "medium",
+        category: "Learning & Research",
+        tags: ["web-fetch", "memory", "cron", "canvas"],
+        description: "Your personal research assistant that reads academic papers so you don't have to read every word. Feed it arxiv links, topics, or authors — it extracts key findings, builds a searchable knowledge base, and delivers weekly digests of breakthroughs in your field.",
+        features: [
+            "<strong>Paper Reading:</strong> Give it an arxiv/PDF link → returns structured summary: problem, methodology, key findings, limitations, and relevance to your interests.",
+            "<strong>Topic Monitoring:</strong> 'Watch for papers about retrieval-augmented generation' → daily arxiv scan, alerts on relevant new papers.",
+            "<strong>Knowledge Graph:</strong> Connects papers by citations, shared authors, related concepts. Canvas-based visualization.",
+            "<strong>Weekly Digest:</strong> Cron job compiles the week's most relevant papers into a newsletter-style briefing.",
+            "<strong>Comparative Analysis:</strong> 'Compare these 3 papers on attention mechanisms' → side-by-side analysis of approaches, results, and tradeoffs."
+        ],
+        example: "'Summarize this paper: arxiv.org/abs/2401.xxxxx' → 'This paper introduces STORM, a method for generating Wikipedia-style articles using LLMs. Key innovation: multi-perspective questioning before writing. Results: 25% improvement in article depth vs direct generation. Limitation: relies on web search quality. Relevant to your documentation generator project.'",
+        techStack: ["Web Fetch", "Memory Files", "Cron Jobs", "Canvas", "Text Processing"]
+    },
+    12: {
+        title: "Adaptive Tutor",
+        difficulty: "medium",
+        category: "Learning & Research",
+        tags: ["skill", "memory", "cron", "spaced-repetition"],
+        description: "A personalized AI tutor that doesn't just answer questions — it creates learning paths, generates practice problems, identifies your weak areas, and uses spaced repetition to ensure you actually remember what you learn. All through chat.",
+        features: [
+            "<strong>Learning Paths:</strong> 'I want to learn system design' → generates a structured curriculum with topics, resources, and milestones.",
+            "<strong>Adaptive Difficulty:</strong> Starts easy, ramps up based on your performance. Drops back down when you struggle.",
+            "<strong>Practice Generation:</strong> Creates custom problems based on what you're learning. Not generic — tailored to your level and weak spots.",
+            "<strong>Spaced Repetition:</strong> Quizzes you on past material at optimal intervals via cron. 'Pop quiz: What's the time complexity of heap sort?'",
+            "<strong>Progress Tracking:</strong> Visual dashboard showing topics mastered, in progress, and yet to start.",
+            "<strong>Socratic Method:</strong> Doesn't just give answers — asks guiding questions to help you figure it out yourself."
+        ],
+        example: "Day 1: 'Teach me dynamic programming' → Starts with memoization concept. Day 3: Cron quiz on fibonacci. Day 7: Medium-difficulty DP problem. Day 14: 'You've mastered 1D DP — ready for 2D? Let's start with grid problems.'",
+        techStack: ["OpenClaw Skills", "Memory Files", "Cron Jobs", "Canvas (dashboard)"]
+    },
+    13: {
+        title: "Pocket Debate Partner",
+        difficulty: "easy",
+        category: "Learning & Research",
+        tags: ["web-search", "skill", "critical-thinking"],
+        description: "An agent that steel-mans the opposite side of any argument you present. Uses real web sources for evidence and citations. Perfect for sharpening your thinking, preparing for debates, or exploring ideas you'd normally dismiss.",
+        features: [
+            "<strong>Counter-Arguments:</strong> State any position → agent builds the strongest possible case against it with real evidence.",
+            "<strong>Source-Backed:</strong> Every claim comes with citations from web search — not made-up arguments.",
+            "<strong>Difficulty Levels:</strong> Casual devil's advocate, formal debate, or aggressive cross-examination mode.",
+            "<strong>Bias Detection:</strong> Points out logical fallacies and cognitive biases in your arguments.",
+            "<strong>Synthesis Mode:</strong> After debating, summarizes both sides and helps you find the nuanced middle ground."
+        ],
+        example: "'I think remote work is strictly better than office work' → Agent: 'Let me push back on that. A 2024 Stanford study found that fully remote workers showed 13% lower promotion rates. Microsoft's own internal research showed that cross-team collaboration dropped 25% during remote work...'",
+        techStack: ["Web Search", "OpenClaw Skills", "Conversation Memory"]
+    },
+    14: {
+        title: "AI Dungeon Master",
+        difficulty: "hard",
+        category: "Community & Social",
+        tags: ["skill", "memory", "multi-user", "group-chat", "image"],
+        description: "A full-featured multiplayer text RPG engine running entirely through group chat. The agent manages persistent game state, NPC dialogue, combat mechanics, inventory, and an evolving world — supporting real-time multiplayer in Discord or Telegram groups.",
+        features: [
+            "<strong>Character Creation:</strong> Each player creates a character with race, class, stats, and backstory through DMs with the agent.",
+            "<strong>Persistent World:</strong> Game state saved between sessions — quests, inventory, relationships, world changes all persist in memory.",
+            "<strong>Combat System:</strong> Turn-based combat with dice rolls, abilities, and tactical positioning. Agent handles all mechanics.",
+            "<strong>NPC AI:</strong> NPCs with distinct personalities, memories of past interactions, and dynamic dialogue based on player reputation.",
+            "<strong>Dynamic Storytelling:</strong> Agent adapts the narrative based on player choices — no two playthroughs are the same.",
+            "<strong>Visual Elements:</strong> Generates ASCII maps, character sheets, and battle layouts in chat."
+        ],
+        example: "In a Discord group: Player 1: 'I approach the merchant carefully.' DM: 'The old merchant eyes you suspiciously. \"Back again, are we? Last time you were here, three of my finest potions went missing.\" He reaches under the counter. Roll for perception.' Player 2: '/roll' → DM: '14 + 3 WIS = 17. You notice his hand resting on a concealed alarm bell, not a weapon. He's scared, not hostile.'",
+        techStack: ["OpenClaw Skills", "Persistent Memory", "Group Chat", "Multi-user State", "Random Number Generation"]
+    },
+    15: {
+        title: "Community Concierge",
+        difficulty: "medium",
+        category: "Community & Social",
+        tags: ["skill", "web-fetch", "cron", "moderation"],
+        description: "The ultimate community manager bot. Onboards new members, answers FAQs from your docs, moderates content, summarizes long discussions, and generates weekly community digests. Frees human moderators to focus on high-value interactions.",
+        features: [
+            "<strong>Smart Onboarding:</strong> Welcomes new members with personalized messages based on how they found the community.",
+            "<strong>FAQ from Docs:</strong> Reads your documentation and answers questions accurately with source links. No more 'RTFM.'",
+            "<strong>Discussion Summaries:</strong> 'Summarize today's discussion in #general' → bullet-point recap of key conversations.",
+            "<strong>Weekly Digest:</strong> Auto-generated newsletter: top discussions, new members, popular links, upcoming events.",
+            "<strong>Moderation:</strong> Detects spam, off-topic posts, and toxic content. Warns or removes based on rules you define.",
+            "<strong>Knowledge Base:</strong> Tracks common questions and builds an auto-updating FAQ document."
+        ],
+        example: "New member joins Discord: 'Welcome, @newuser! 👋 I see you came from the Reddit post about AI agents. Here are some great starting points: #getting-started for setup, #showcase for what people have built, and feel free to ask me anything about OpenClaw.'",
+        techStack: ["OpenClaw Skills", "Web Fetch", "Cron Jobs", "Channel Messaging", "Memory"]
+    },
+    16: {
+        title: "Group Expense Splitter",
+        difficulty: "easy",
+        category: "Community & Social",
+        tags: ["skill", "memory", "group-chat", "finance"],
+        description: "A Splitwise replacement that lives in your group chat. Track shared expenses in real-time — just say who paid what and the agent handles the math. Tracks balances, sends reminders, and generates monthly settlement reports.",
+        features: [
+            "<strong>Quick Logging:</strong> 'I paid ₹500 for dinner for all' → splits equally, updates all balances instantly.",
+            "<strong>Custom Splits:</strong> 'Split the ₹1200 hotel: Raj 40%, me 30%, Priya 30%' → handles percentage and custom splits.",
+            "<strong>Balance Dashboard:</strong> 'Who owes what?' → clean summary of all debts in the group.",
+            "<strong>Settlement Suggestions:</strong> Minimizes transactions — instead of 6 payments, suggests optimal 3-payment settlement.",
+            "<strong>Monthly Reports:</strong> End-of-month cron generates spending summary by category with charts.",
+            "<strong>Reminders:</strong> Gentle nudges to people who owe money. Configurable frequency."
+        ],
+        example: "In a trip group chat: 'Logged: Annu paid ₹500 for dinner (split 4 ways). Updated balances → Raj owes ₹125, Priya owes ₹125, Sam owes ₹125. Total group spend today: ₹2,340.'",
+        techStack: ["OpenClaw Skills", "Memory Files", "Group Chat", "Cron Jobs"]
+    },
+    17: {
+        title: "AI Nutritionist",
+        difficulty: "medium",
+        category: "Health & Wellness",
+        tags: ["image", "memory", "cron", "health"],
+        description: "Your personal nutritionist in your pocket. Snap a photo of any meal and the agent identifies foods, estimates calories and macros, tracks your daily intake, and helps you hit your nutrition goals with meal suggestions and grocery lists.",
+        features: [
+            "<strong>Photo Analysis:</strong> Send a meal photo → agent identifies dishes, estimates portions, calculates calories/protein/carbs/fat.",
+            "<strong>Daily Tracking:</strong> Running tally of calories and macros. 'How am I doing today?' → progress toward daily goals.",
+            "<strong>Meal Suggestions:</strong> 'I've had 1200 cal so far, what should I eat for dinner?' → suggestions that fill your remaining macro targets.",
+            "<strong>Weekly Meal Plans:</strong> Generates 7-day meal plans based on your goals, cuisine preferences, and budget.",
+            "<strong>Grocery Lists:</strong> From meal plans, generates organized shopping lists grouped by store section.",
+            "<strong>Trend Analysis:</strong> Weekly cron reports on eating patterns, nutrient deficiencies, and progress toward goals."
+        ],
+        example: "Send a photo of your lunch → 'I see: dal rice with raita and salad. Estimated: 520 cal, 18g protein, 72g carbs, 14g fat. Daily total: 1,340/2,000 cal. You're low on protein today — consider a protein shake or paneer dish for dinner.'",
+        techStack: ["Image Analysis", "Memory Files", "Cron Jobs", "Nutritional Databases"]
+    },
+    18: {
+        title: "Mental Health Check-in Agent",
+        difficulty: "medium",
+        category: "Health & Wellness",
+        tags: ["skill", "cron", "memory", "wellness"],
+        description: "A compassionate AI companion that performs daily mood check-ins, tracks emotional patterns over time, suggests evidence-based coping strategies, detects concerning trends, and knows when to recommend professional help. Not a replacement for therapy — a supplement.",
+        features: [
+            "<strong>Daily Check-ins:</strong> Gentle prompts at consistent times. 'How are you feeling today? (1-10, or just tell me)' Supports both structured and freeform responses.",
+            "<strong>Pattern Recognition:</strong> Tracks mood over weeks/months. Identifies triggers — sleep, weather, workload, social isolation.",
+            "<strong>Coping Toolkit:</strong> Based on your current state, suggests breathing exercises, journaling prompts, grounding techniques, or activity suggestions.",
+            "<strong>Gratitude Practice:</strong> Optional daily gratitude prompt. Tracks entries and surfaces them during low periods.",
+            "<strong>Trend Alerts:</strong> If mood consistently drops over 2+ weeks, gently suggests professional resources with local helpline numbers.",
+            "<strong>Privacy First:</strong> All data stays local. No external sharing. User can delete any entry at any time."
+        ],
+        example: "Evening check-in: 'Hey, how was today?' → 'Pretty rough, work stress.' → 'I hear you. This is the 3rd high-stress day this week. Your mood tends to improve after your evening walks — want to try a 15-minute one? Also, you mentioned the project deadline is Friday — after that, things might ease up. You've handled tough weeks before. 💪'",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Memory Files", "Sentiment Analysis"]
+    },
+    19: {
+        title: "Personal Finance Analyst",
+        difficulty: "hard",
+        category: "Finance & Productivity",
+        tags: ["skill", "memory", "cron", "alerts", "analytics"],
+        description: "Turn your bank notification SMS and emails into a powerful financial intelligence system. The agent categorizes every transaction, detects forgotten subscriptions, projects your monthly burn rate, suggests savings strategies, and alerts you before you overspend.",
+        features: [
+            "<strong>Transaction Parsing:</strong> Reads bank SMS/email alerts, extracts amount, merchant, and category automatically.",
+            "<strong>Smart Categorization:</strong> Auto-categorizes: food, transport, entertainment, bills, shopping. Learns your patterns.",
+            "<strong>Subscription Detective:</strong> Identifies recurring charges, lists all active subscriptions, flags ones you haven't used recently.",
+            "<strong>Budget Tracking:</strong> Set budgets per category. Real-time alerts: 'You've spent 80% of your dining budget and it's only the 15th.'",
+            "<strong>Projections:</strong> 'At current rate, you'll spend ₹45,000 this month. That's ₹8,000 over your target. Biggest increase: Swiggy orders (+40%).'",
+            "<strong>Savings Goals:</strong> Track progress toward goals (vacation, gadget, emergency fund) with auto-calculated timelines."
+        ],
+        example: "'Monthly report: You spent ₹42,300 in January. Top categories: Rent ₹15,000, Food ₹9,200 (₹3,400 was Swiggy), Transport ₹4,100. Found 2 subscriptions you might not need: Adobe CC (₹1,675/mo, last used 3 months ago) and that meditation app (₹499/mo, never opened). Canceling both saves ₹26,088/year.'",
+        techStack: ["OpenClaw Skills", "Memory Files", "Cron Jobs", "SMS/Email Parsing", "Analytics"]
+    },
+    20: {
+        title: "Meeting Minutes Agent",
+        difficulty: "easy",
+        category: "Finance & Productivity",
+        tags: ["skill", "cron", "tts", "transcription"],
+        description: "Never take meeting notes again. Send a voice note recording or paste a transcript, and the agent generates structured minutes with action items, deadlines, and follow-up reminders. Tracks action item completion across meetings.",
+        features: [
+            "<strong>Voice → Minutes:</strong> Send a voice recording of your meeting → transcribed and formatted into structured minutes.",
+            "<strong>Action Item Extraction:</strong> Automatically identifies who committed to what with deadlines. 'Raj will send the design by Friday.'",
+            "<strong>Follow-up Reminders:</strong> Cron-based reminders before deadlines. 'Reminder: Raj's design mockups are due tomorrow.'",
+            "<strong>Meeting History:</strong> Searchable archive of all past meetings. 'What did we decide about the pricing model?' → finds it.",
+            "<strong>Attendance Tracking:</strong> Logs who was in each meeting. 'Loop in Priya — she missed the last 2 standups.'",
+            "<strong>Summary Sharing:</strong> Auto-sends minutes to all attendees via their preferred channel."
+        ],
+        example: "Paste a Zoom transcript → '## Meeting: Sprint Planning (Feb 14)\\n**Attendees:** Annu, Raj, Priya\\n\\n**Decisions:**\\n- Ship v2.0 by Feb 28\\n- Drop the analytics feature for now\\n\\n**Action Items:**\\n- [ ] Raj: Fix auth bug (due: Feb 16)\\n- [ ] Priya: Update docs (due: Feb 18)\\n- [ ] Annu: Review Raj's PR (due: Feb 17)'",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "TTS/STT", "Memory Files", "Messaging"]
+    },
+    21: {
+        title: "Dream Journal Analyzer",
+        difficulty: "easy",
+        tags: ["memory", "cron", "tts", "analytics"],
+        description: "Log your dreams via voice note or text right when you wake up. The agent stores them, identifies recurring symbols, people, and emotional themes over weeks and months. Provides periodic insights into your subconscious patterns.",
+        features: [
+            "<strong>Quick Capture:</strong> Voice note or text immediately upon waking — agent transcribes and stores with date and mood tags.",
+            "<strong>Symbol Tracking:</strong> Identifies recurring elements — flying, water, specific people, locations — and tracks their frequency.",
+            "<strong>Emotional Analysis:</strong> Tags each dream's emotional tone and tracks patterns over time.",
+            "<strong>Monthly Insights:</strong> 'This month: 60% of your dreams involved work scenarios. Water appeared 8 times — often during stressful weeks.'"
+        ],
+        example: "Voice note at 6 AM: 'Had that flying dream again, was over the ocean this time...' → Agent logs it, notes this is the 4th flying dream this month, all during weeks with upcoming deadlines.",
+        techStack: ["Memory Files", "Cron", "TTS/Voice", "Pattern Analysis"]
+    },
+    22: {
+        title: "Wardrobe Stylist",
+        difficulty: "medium",
+        tags: ["image", "memory", "cron", "web-search"],
+        description: "Photograph your closet piece by piece to build a digital wardrobe. The agent suggests daily outfits based on weather, your calendar events, style preferences, and what you haven't worn recently. Fashion advice via chat.",
+        features: [
+            "<strong>Closet Inventory:</strong> Photo each item → agent catalogs by type, color, style, and season.",
+            "<strong>Daily Suggestions:</strong> Morning cron: 'It's 32°C with a client meeting at 2pm — how about the navy chinos with the white linen shirt?'",
+            "<strong>Wear Tracking:</strong> Tracks what you wore when, ensures rotation, flags items you never wear.",
+            "<strong>Shopping Suggestions:</strong> 'You have 6 blue shirts but no neutral blazer — here are 3 options under ₹3000.'"
+        ],
+        example: "'What should I wear to a casual dinner tonight?' → 'Based on the 24°C weather and your wardrobe: dark jeans + that olive henley you haven't worn in 3 weeks + white sneakers. It's been complimented before (you noted that on Jan 12).'",
+        techStack: ["Image Analysis", "Memory", "Cron Jobs", "Web Search", "Weather API"]
+    },
+    23: {
+        title: "Travel Planner Agent",
+        difficulty: "medium",
+        tags: ["web-search", "browser", "memory", "cron"],
+        description: "Give it your dates, budget, and interests — it builds a complete itinerary with flights, hotels, activities, local tips, visa requirements, and real-time alerts for changes. Your personal travel agent that works 24/7.",
+        features: [
+            "<strong>Itinerary Builder:</strong> Full day-by-day plan with timings, transport between spots, and restaurant suggestions.",
+            "<strong>Price Comparison:</strong> Searches flights and hotels across platforms, tracks price drops, alerts on deals.",
+            "<strong>Local Intelligence:</strong> Cultural tips, must-try food, scam warnings, and off-the-beaten-path gems.",
+            "<strong>Real-time Updates:</strong> Flight delay? Agent re-routes your day. Rain forecast? Swaps outdoor activity for indoor."
+        ],
+        example: "'Plan a 5-day trip to Bali for 2, budget ₹1.5L including flights, March 15-20' → Complete itinerary with flight options, 3 hotel choices at different price points, daily plans, temple etiquette tips, and a packing list.",
+        techStack: ["Web Search", "Browser Automation", "Memory", "Cron Jobs"]
+    },
+    24: {
+        title: "Recipe from Fridge Photo",
+        difficulty: "easy",
+        tags: ["image", "web-search", "skill"],
+        description: "Snap a photo of your fridge or pantry — the agent identifies all visible ingredients and suggests recipes you can actually make right now. No more 'I have nothing to eat' when your fridge is full.",
+        features: [
+            "<strong>Ingredient Detection:</strong> Photo → list of identified ingredients with quantities estimated.",
+            "<strong>Recipe Matching:</strong> Finds recipes using ONLY what you have. No 'you also need 17 spices' surprises.",
+            "<strong>Dietary Filters:</strong> Respects your preferences — vegetarian, keto, low-carb, allergies.",
+            "<strong>Step-by-Step:</strong> Sends cooking instructions one step at a time (voice optional for hands-free cooking)."
+        ],
+        example: "Photo of fridge → 'I see: eggs, tomatoes, onions, cheese, spinach, and bread. Top suggestions: 1) Spanish omelette (20 min), 2) Grilled cheese with tomato soup (15 min), 3) Shakshuka (25 min). Want the recipe for any of these?'",
+        techStack: ["Image Analysis", "Web Search", "OpenClaw Skills"]
+    },
+    25: {
+        title: "Pet Care Assistant",
+        difficulty: "easy",
+        tags: ["memory", "cron", "reminders"],
+        description: "A dedicated assistant for pet parents. Tracks vet appointments, medication schedules, feeding times, vaccination records, and behavioral changes. Never miss a flea treatment again.",
+        features: [
+            "<strong>Health Records:</strong> Vaccination history, weight tracking, allergy notes, vet contact info — all in one place.",
+            "<strong>Medication Reminders:</strong> 'Time for Luna's heartworm pill!' with tracking of administered doses.",
+            "<strong>Behavioral Log:</strong> Track changes over time — useful for vet visits. 'Luna's been scratching more the past 2 weeks.'",
+            "<strong>Multi-Pet:</strong> Handles multiple pets with separate profiles and schedules."
+        ],
+        example: "'Luna's vet checkup is in 3 days. Last visit notes: weight was 12kg (up from 11.2kg), vet recommended reducing treats. Her flea medication is due next Tuesday. She's been more energetic since switching to the new food 2 weeks ago.'",
+        techStack: ["Memory Files", "Cron Jobs", "Reminders"]
+    },
+    26: {
+        title: "Habit Streak Gamifier",
+        difficulty: "medium",
+        tags: ["skill", "memory", "cron", "gamification"],
+        description: "A fully customizable habit gamification system. Like our Solo Leveling skill but open-ended — supports any theme (RPG, space, sports), multiplayer leaderboards, group challenges, and custom reward systems.",
+        features: [
+            "<strong>Custom Themes:</strong> Solo Leveling, Pokemon, Space Explorer, or create your own progression system.",
+            "<strong>Multiplayer:</strong> Challenge friends, group leaderboards, team quests in group chats.",
+            "<strong>Flexible Habits:</strong> Any habit becomes a quest — coding, reading, gym, meditation, hydration.",
+            "<strong>Reward Shop:</strong> Earn points → redeem for real rewards you define (cheat meal, new game, day off)."
+        ],
+        example: "Theme: Space Explorer. 'Mission Log: Day 45. You completed today's 30-min coding mission (+50 XP). Current rank: Lieutenant. 200 XP to Commander. Your crew (group) completed 85% of this week's missions — ahead of rival crew Alpha Team!'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron Jobs", "Group Chat"]
+    },
+    27: {
+        title: "Personal Shopper Agent",
+        difficulty: "medium",
+        tags: ["browser", "web-search", "cron", "alerts"],
+        description: "Tell the agent what you want to buy — it searches across e-commerce sites, compares prices, tracks price history, and alerts you when the price drops below your target. Never overpay again.",
+        features: [
+            "<strong>Price Comparison:</strong> Searches Amazon, Flipkart, and other sites for the best deal.",
+            "<strong>Price Tracking:</strong> 'Watch this MacBook Air' → daily cron checks price, alerts on drops.",
+            "<strong>Deal Alerts:</strong> During sales (Big Billion Day, Prime Day), scans your wishlist for deals.",
+            "<strong>Review Summary:</strong> Aggregates reviews across platforms, highlights common pros/cons."
+        ],
+        example: "'Find me the best deal on AirPods Pro' → 'Current prices: Amazon ₹18,900, Flipkart ₹19,499, Croma ₹20,999. Amazon is cheapest but was ₹16,999 during Republic Day sale. Recommend waiting — Prime Day is in 3 weeks. Want me to track and alert?'",
+        techStack: ["Web Search", "Browser Automation", "Cron Jobs", "Memory"]
+    },
+    28: {
+        title: "Movie/Show Recommender",
+        difficulty: "easy",
+        tags: ["memory", "web-search", "skill"],
+        description: "An entertainment concierge that learns your taste over time. Tracks what you've watched, rates, and loved — then suggests new content with trailers and reviews. Never waste 30 minutes scrolling Netflix again.",
+        features: [
+            "<strong>Taste Learning:</strong> The more you rate, the better it gets. Understands nuance — 'I like slow-burn thrillers, not jump-scare horror.'",
+            "<strong>Watch History:</strong> 'What did I watch last month?' → full list with your ratings.",
+            "<strong>Smart Suggestions:</strong> 'What should I watch tonight?' → 3 picks with why you'd like each one.",
+            "<strong>New Release Alerts:</strong> Tracks upcoming releases from directors/actors you like."
+        ],
+        example: "'Looking for something like Severance' → 'Based on your love for cerebral sci-fi: 1) Dark (German, 3 seasons, mind-bending time travel), 2) Devs (Alex Garland, tech thriller), 3) Maniac (Jonah Hill + Emma Stone, surreal). All available on platforms you have.'",
+        techStack: ["Memory Files", "Web Search", "OpenClaw Skills"]
+    },
+    29: {
+        title: "API Health Monitor",
+        difficulty: "easy",
+        tags: ["exec", "cron", "alerts"],
+        description: "A lightweight uptime monitor that pings your API endpoints on a schedule, measures response times, and alerts you via chat when something goes wrong. Simple but essential.",
+        features: [
+            "<strong>Endpoint Monitoring:</strong> Configure URLs to check with expected status codes and response time thresholds.",
+            "<strong>Cron-based Pings:</strong> Check every 5/15/30 minutes — configurable per endpoint.",
+            "<strong>Smart Alerts:</strong> Doesn't alert on single blips — confirms with retry before notifying. Includes response time trends.",
+            "<strong>Daily Report:</strong> Uptime percentage, average response time, slowest endpoints, and error summary."
+        ],
+        example: "'Alert: AgentForge API response time spiked to 3.2s (normal: 200ms) at 14:32 IST. Checked 3 times — consistent. Uptime today: 99.1% (2 timeouts). The /api/agents endpoint is the bottleneck.'",
+        techStack: ["Shell Exec (curl)", "Cron Jobs", "Memory", "Alerting"]
+    },
+    30: {
+        title: "Database Query Agent",
+        difficulty: "medium",
+        tags: ["exec", "skill", "database"],
+        description: "Ask questions in plain English about your database and get formatted answers. The agent writes safe SQL, runs it in a read-only context, and presents results clearly. For developers who want quick data insights without writing queries.",
+        features: [
+            "<strong>Natural Language → SQL:</strong> 'How many users signed up last week?' → generates and runs the query.",
+            "<strong>Safety First:</strong> Read-only mode by default. Write operations require explicit confirmation.",
+            "<strong>Schema Awareness:</strong> Reads your database schema once, references it for accurate queries.",
+            "<strong>Formatted Output:</strong> Results displayed as readable tables or charts, not raw SQL output.",
+            "<strong>Query History:</strong> Saves past queries for reuse. 'Run that user growth query again.'"
+        ],
+        example: "'Which products have the most returns this month?' → Generates JOIN query across orders, returns, and products tables. Returns: 'Top 3 returned products: 1) Wireless Earbuds (23 returns, 8.2% rate), 2) Phone Case X (18 returns, 12.1% rate — flagged as high), 3) USB Hub (12 returns, 3.4%).'",
+        techStack: ["Shell Exec", "SQL", "OpenClaw Skills", "Database Connectors"]
+    },
+    31: {
+        title: "Log Analyzer & Alerter",
+        difficulty: "medium",
+        tags: ["exec", "cron", "skill", "monitoring"],
+        description: "An intelligent log monitoring system that watches your application logs, detects anomalies using pattern recognition, and sends actionable alerts with suggested fixes. Goes beyond grep — understands context.",
+        features: [
+            "<strong>Pattern Learning:</strong> Reads normal log patterns, detects deviations — new error types, frequency spikes, unusual sequences.",
+            "<strong>Smart Grouping:</strong> Groups related errors instead of flooding you with individual alerts.",
+            "<strong>Fix Suggestions:</strong> For known error patterns, suggests fixes from your codebase or documentation.",
+            "<strong>Real-time + Batch:</strong> Critical errors alert immediately; summaries delivered on schedule."
+        ],
+        example: "'Log Alert: 47 new NullPointerException in PaymentService in the last hour (normally 0-2). All triggered from processRefund(). This started after commit abc123 was deployed at 14:00. Suggested: check the null handling in RefundValidator.java line 89.'",
+        techStack: ["Shell Exec", "Cron Jobs", "Log Parsing", "Pattern Matching"]
+    },
+    32: {
+        title: "Dependency Vulnerability Scanner",
+        difficulty: "easy",
+        tags: ["exec", "cron", "github-api"],
+        description: "Scans your projects for outdated or vulnerable dependencies, assesses severity, and auto-creates PRs with safe updates. Set it on a weekly cron and never worry about known vulnerabilities.",
+        features: [
+            "<strong>Multi-Language:</strong> Supports npm, pip, cargo, go modules — reads lockfiles and checks against CVE databases.",
+            "<strong>Severity Assessment:</strong> Prioritizes critical/high vulns over minor ones. 'These 2 are urgent, these 5 can wait.'",
+            "<strong>Auto-PR:</strong> For safe updates (patch/minor), creates a PR with updated lockfile and changelog.",
+            "<strong>Weekly Report:</strong> Summary of all dependencies across all your repos — what's outdated, what's vulnerable."
+        ],
+        example: "'Weekly Scan: Found 3 vulnerabilities across 2 repos. CRITICAL: lodash 4.17.20 in AgentForge (prototype pollution, CVE-2024-xxxx) — I've created PR #47 with the fix. MEDIUM: 2 outdated deps in dashboard — no known vulns but 6 months behind.'",
+        techStack: ["Shell Exec", "Cron Jobs", "GitHub API", "CVE Databases"]
+    },
+    33: {
+        title: "CLI Tool Builder",
+        difficulty: "easy",
+        tags: ["exec", "skill", "code-generation"],
+        description: "Describe a command-line tool in plain English and the agent generates, tests, and packages it. Great for quick utility scripts that would take 30 minutes to write but 10 seconds to describe.",
+        features: [
+            "<strong>Natural Language → Code:</strong> 'Make a CLI that converts CSV to JSON with column filtering' → working tool.",
+            "<strong>Language Choice:</strong> Python, Node.js, Bash, or Rust — picks the best fit or uses your preference.",
+            "<strong>Testing:</strong> Generates test cases, runs them, and fixes issues before delivering.",
+            "<strong>Packaging:</strong> Makes it installable — npm package, pip package, or just a standalone script."
+        ],
+        example: "'Build me a CLI that resizes all images in a folder to 800px width' → Agent creates an image-resize tool in Python, tests it with sample images, adds --width and --quality flags, and saves it to ~/bin.",
+        techStack: ["Shell Exec", "Code Generation", "File System"]
+    },
+    34: {
+        title: "Multi-Repo Changelog Generator",
+        difficulty: "easy",
+        tags: ["exec", "cron", "github-api", "messaging"],
+        description: "Aggregates git commits across multiple repositories, categorizes changes, generates human-readable changelogs, and posts release notes to your team channel. No more manual release notes.",
+        features: [
+            "<strong>Multi-Repo:</strong> Monitors multiple repos, understands which commits belong to which features.",
+            "<strong>Smart Categorization:</strong> Groups by: Features, Bug Fixes, Refactoring, Documentation, Breaking Changes.",
+            "<strong>Human-Readable:</strong> Transforms 'fix: null check in auth.js' into 'Fixed authentication error for users with special characters in passwords.'",
+            "<strong>Auto-Publish:</strong> On release tag, generates changelog and posts to Discord/Slack."
+        ],
+        example: "'## v2.1.0 Release Notes\\n### ✨ Features\\n- Agent communication now supports WebSocket (real-time updates)\\n- New dark mode for the dashboard\\n### 🐛 Bug Fixes\\n- Fixed memory leak in long-running sessions\\n- Resolved timezone issues in scheduled tasks\\n### 📝 Docs\\n- Updated API reference with new endpoints'",
+        techStack: ["Shell Exec (git)", "GitHub API", "Cron Jobs", "Channel Messaging"]
+    },
+    35: {
+        title: "Infrastructure as Chat",
+        difficulty: "hard",
+        tags: ["exec", "browser", "skill", "cloud-api"],
+        description: "Deploy, scale, and manage cloud infrastructure through natural language in chat. 'Spin up a 2-core instance on Hetzner with nginx and SSL.' No Terraform files, no cloud console clicking.",
+        features: [
+            "<strong>Provisioning:</strong> Create servers, databases, and services from chat with plain English descriptions.",
+            "<strong>Configuration:</strong> 'Install Node 20, nginx, and certbot on the new server' → SSH and configure automatically.",
+            "<strong>Scaling:</strong> 'Traffic is spiking, add 2 more instances behind the load balancer' → handles it.",
+            "<strong>Cost Tracking:</strong> 'How much am I spending on cloud this month?' → breakdown by service.",
+            "<strong>Multi-Cloud:</strong> Supports Hetzner, AWS, DigitalOcean, Render — manages them all from one interface."
+        ],
+        example: "'Deploy the AgentForge dashboard to a new Render web service with the environment variables from our .env' → Agent creates the service, configures env vars, deploys, and returns the live URL.",
+        techStack: ["Shell Exec (SSH)", "Cloud APIs", "Browser Automation", "OpenClaw Skills"]
+    },
+    36: {
+        title: "Code Review Coach",
+        difficulty: "medium",
+        tags: ["exec", "skill", "education", "github-api"],
+        description: "A code reviewer that doesn't just find problems — it teaches you WHY something is bad and how to write it better. Focuses on patterns, principles, and growth rather than just lint errors.",
+        features: [
+            "<strong>Educational Reviews:</strong> Instead of 'this is wrong', explains the principle being violated and shows the better pattern.",
+            "<strong>Skill Tracking:</strong> Tracks which patterns you've learned, stops repeating lessons you've internalized.",
+            "<strong>Before/After:</strong> Shows your code alongside the improved version with clear explanations.",
+            "<strong>Growth Reports:</strong> Monthly summary of skills improved, common mistakes reducing, and areas to focus on."
+        ],
+        example: "'In your latest PR, I noticed you're using string concatenation for SQL queries in 3 places. This is a SQL injection risk. Here's why: [explanation]. Here's the fix using parameterized queries: [code]. You made this same pattern 2 weeks ago but only once — you're getting better! 📈'",
+        techStack: ["GitHub API", "Shell Exec", "OpenClaw Skills", "Memory"]
+    },
+    37: {
+        title: "Email Triage Agent",
+        difficulty: "medium",
+        tags: ["browser", "cron", "skill", "messaging"],
+        description: "Reads your inbox on a schedule, categorizes emails by urgency, drafts responses for routine messages, archives junk, and alerts you only about what truly needs your attention. Email management on autopilot.",
+        features: [
+            "<strong>Smart Categorization:</strong> Action Required / Waiting On / FYI / Promotional / Spam — learns your preferences.",
+            "<strong>Draft Responses:</strong> For routine emails (meeting confirmations, simple questions), drafts replies you approve with a 👍.",
+            "<strong>Summary Digest:</strong> Instead of checking email, get a morning summary: '5 action items, 3 FYIs, archived 12 promotional.'",
+            "<strong>VIP Alerts:</strong> Emails from important contacts trigger immediate notifications."
+        ],
+        example: "'Morning inbox summary: 📌 Action Required (3): AWS billing alert ($127, +22% from last month), client asking for project update (suggest deadline: today), team lunch poll. 📋 FYI (5): 2 newsletter digests, deployment success notification, 2 GitHub notifications. 🗑 Archived: 8 promotional emails.'",
+        techStack: ["Browser Automation", "Cron Jobs", "OpenClaw Skills", "Messaging"]
+    },
+    38: {
+        title: "Cross-Platform Message Sync",
+        difficulty: "medium",
+        tags: ["multi-channel", "skill", "cron"],
+        description: "Bridge important messages between messaging platforms. A critical WhatsApp message can trigger a Slack notification. A Discord announcement can be forwarded to Telegram. OpenClaw as the universal message router.",
+        features: [
+            "<strong>Rules Engine:</strong> Define routing rules: 'Forward any WhatsApp message containing \"urgent\" to my Slack #alerts channel.'",
+            "<strong>Smart Filtering:</strong> Doesn't forward everything — only messages matching your criteria.",
+            "<strong>Format Adaptation:</strong> Reformats messages for the target platform (markdown differences, media handling).",
+            "<strong>Bidirectional:</strong> Reply on Slack and it sends back to the WhatsApp conversation."
+        ],
+        example: "'Set up: When my manager messages on WhatsApp after 10 PM, forward to Telegram with a ⚡ prefix so I see it on my other phone.' → Agent configures the routing rule, tests it, confirms working.",
+        techStack: ["Multi-channel Messaging", "OpenClaw Skills", "Cron Jobs"]
+    },
+    39: {
+        title: "Invoice & Receipt Processor",
+        difficulty: "easy",
+        tags: ["image", "memory", "skill"],
+        description: "Forward photos or PDFs of receipts and invoices — the agent extracts vendor, amount, date, and category, stores them organized, and generates summaries for expense reports or tax filing.",
+        features: [
+            "<strong>OCR + Extraction:</strong> Photo/PDF → structured data: vendor, amount, date, tax, category.",
+            "<strong>Auto-Categorization:</strong> Business expense, personal, tax-deductible — learns your patterns.",
+            "<strong>Monthly Summaries:</strong> Organized expense report ready for accounting or tax filing.",
+            "<strong>Duplicate Detection:</strong> Flags if you've already logged the same receipt."
+        ],
+        example: "Forward a restaurant bill photo → 'Logged: ₹1,240 at Truffles, Feb 14 (Food & Dining — Business). Tax: ₹186.00. February dining total: ₹4,890/₹8,000 budget.'",
+        techStack: ["Image Analysis", "Memory Files", "OpenClaw Skills"]
+    },
+    40: {
+        title: "Appointment Scheduler",
+        difficulty: "medium",
+        tags: ["skill", "cron", "calendar", "messaging"],
+        description: "Handle the back-and-forth of scheduling without Calendly or Doodle. Share your availability naturally through chat, and the agent coordinates with the other person to find a time that works.",
+        features: [
+            "<strong>Availability Sharing:</strong> 'Schedule a call with Raj this week' → agent checks your calendar, suggests 3 slots, messages Raj.",
+            "<strong>Timezone Smart:</strong> Automatically handles timezone differences. Shows times in both parties' zones.",
+            "<strong>Rescheduling:</strong> 'Push my 3pm to next week' → finds a new slot, notifies all participants.",
+            "<strong>Buffer Time:</strong> Respects your preferences — no back-to-back meetings, lunch blocks, focus time."
+        ],
+        example: "'Set up a call with the team next week' → 'I've checked everyone's calendars. The only 1-hour slot where all 4 of you are free is Wednesday 11 AM - 12 PM IST. Should I send the invite?'",
+        techStack: ["OpenClaw Skills", "Calendar API", "Messaging", "Cron Jobs"]
+    },
+    41: {
+        title: "RSS Feed Curator",
+        difficulty: "easy",
+        tags: ["web-fetch", "cron", "skill", "memory"],
+        description: "Monitors RSS feeds from your favorite blogs, news sites, and publications. Filters articles by your interests and delivers a daily digest of only what's worth reading. Cut through the noise.",
+        features: [
+            "<strong>Feed Management:</strong> Add/remove RSS feeds via chat. Supports any standard RSS/Atom feed.",
+            "<strong>Interest Filtering:</strong> AI filters based on your stated interests and reading history. Skips irrelevant articles.",
+            "<strong>Daily Digest:</strong> Morning cron delivers 5-10 articles with summaries and links.",
+            "<strong>Read Later:</strong> 'Save this for later' → queued for weekend reading."
+        ],
+        example: "'Your Daily Tech Digest (5 articles):\\n1. 🔥 \"OpenAI's new reasoning model beats PhD-level benchmarks\" — key takeaway: 94% on GPQA\\n2. \"Rust just hit 1.80\" — your watched language, new async improvements\\n3. \"India's startup funding up 40% in Q1\" — relevant to your market\\n[2 more...]'",
+        techStack: ["Web Fetch", "Cron Jobs", "Memory", "OpenClaw Skills"]
+    },
+    42: {
+        title: "File Organizer Agent",
+        difficulty: "easy",
+        tags: ["exec", "cron", "skill"],
+        description: "Watches your Downloads folder (or any directory), analyzes file contents, and automatically renames, categorizes, and moves files to the right location. No more cluttered Downloads folder.",
+        features: [
+            "<strong>Content Analysis:</strong> Reads file names, types, and contents to determine category.",
+            "<strong>Smart Naming:</strong> Renames 'IMG_20240115_123456.jpg' to '2024-01-15_restaurant_receipt.jpg'.",
+            "<strong>Auto-Sort:</strong> PDFs → Documents, Images → Photos (sorted by month), Code → Projects.",
+            "<strong>Customizable Rules:</strong> 'Move all .pdf files containing \"invoice\" to ~/Finance/Invoices/'"
+        ],
+        example: "Downloads folder has 47 unsorted files → Agent processes: '✅ Organized 47 files: 12 images → Photos/2024-02/, 8 PDFs → Documents/ (3 were invoices → Finance/), 5 code files → Projects/, 22 misc → Sorted/. Renamed 15 files for clarity.'",
+        techStack: ["Shell Exec", "Cron Jobs", "File System", "OpenClaw Skills"]
+    },
+    43: {
+        title: "Web Scraping Orchestrator",
+        difficulty: "medium",
+        tags: ["browser", "web-fetch", "cron", "alerts"],
+        description: "Natural language web scraping. Describe what data you want from any website, and the agent builds the scraper, runs it on schedule, and alerts you on changes. Price monitoring, stock tracking, content changes — all via chat.",
+        features: [
+            "<strong>Natural Language Setup:</strong> 'Track the price of MacBook Air on Amazon daily' → agent builds and schedules the scraper.",
+            "<strong>Change Detection:</strong> Monitors any webpage for changes and alerts you on significant updates.",
+            "<strong>Price Alerts:</strong> 'Alert me when this drops below ₹80,000' → daily checks with smart alerting.",
+            "<strong>Data Export:</strong> Collected data exportable as CSV, JSON, or visualized as charts."
+        ],
+        example: "'Watch this apartment listing site for new 2BHK under ₹25K in Koramangala' → Agent scrapes daily, filters new listings matching criteria, sends you: 'New listing: 2BHK, 1100 sqft, ₹22,000/mo, 2nd floor, semi-furnished. Listed 2 hours ago. [Link]'",
+        techStack: ["Browser Automation", "Web Fetch", "Cron Jobs", "Memory"]
+    },
+    44: {
+        title: "Bookmark Brain",
+        difficulty: "easy",
+        tags: ["web-fetch", "memory", "skill"],
+        description: "Save links by sending them in chat. The agent reads the page, generates a summary, tags it by topic, and makes your entire bookmark collection searchable. Never lose a link again.",
+        features: [
+            "<strong>One-Click Save:</strong> Just send a URL → agent reads, summarizes, and stores.",
+            "<strong>Auto-Tagging:</strong> Categorizes by topic (tech, finance, health, recipes, etc.) automatically.",
+            "<strong>Semantic Search:</strong> 'That article about React performance I saved last month' → finds it instantly.",
+            "<strong>Collections:</strong> Group bookmarks into collections. Share collections with others."
+        ],
+        example: "Send: 'https://blog.example.com/react-server-components' → 'Saved! 📑 \"Understanding React Server Components\" — explains RSC architecture, when to use vs client components, performance benchmarks. Tagged: #react #frontend #performance. You now have 12 React bookmarks.'",
+        techStack: ["Web Fetch", "Memory Files", "OpenClaw Skills"]
+    },
+    45: {
+        title: "Flashcard Generator",
+        difficulty: "easy",
+        tags: ["skill", "memory", "cron"],
+        description: "Send notes, textbook photos, or any learning material — the agent generates Anki-style flashcards and quizzes you via chat on a spaced repetition schedule. Learning on autopilot.",
+        features: [
+            "<strong>Auto-Generation:</strong> Paste notes → generates Q&A flashcards. Supports text, images, and code.",
+            "<strong>Spaced Repetition:</strong> SM-2 algorithm schedules reviews at optimal intervals via cron.",
+            "<strong>Chat Quizzes:</strong> 'Quiz me on JavaScript closures' → interactive Q&A with immediate feedback.",
+            "<strong>Progress Tracking:</strong> Stats on cards mastered, due for review, and accuracy rates."
+        ],
+        example: "Cron fires at 9 AM: 'Morning review! 8 cards due today. Let's start: Q: What is the time complexity of binary search? [Type your answer]' → '✅ Correct: O(log n). Confidence: Easy? Hard? [This affects when you'll see it again]'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron Jobs"]
+    },
+    46: {
+        title: "Language Learning Buddy",
+        difficulty: "medium",
+        tags: ["skill", "memory", "cron", "tts"],
+        description: "Practice a new language through natural conversation in chat. The agent corrects grammar, builds your vocabulary, sends daily challenges, and adapts difficulty to your level. With TTS for pronunciation practice.",
+        features: [
+            "<strong>Conversational Practice:</strong> Chat in your target language — agent responds naturally and corrects mistakes inline.",
+            "<strong>Grammar Correction:</strong> Explains WHY something is wrong, not just what the correct form is.",
+            "<strong>Daily Challenges:</strong> Cron sends a daily vocabulary word, grammar exercise, or translation challenge.",
+            "<strong>Pronunciation:</strong> TTS reads sentences for you to practice listening and shadowing.",
+            "<strong>Level Tracking:</strong> Estimates your CEFR level and adjusts complexity accordingly."
+        ],
+        example: "You: 'Je suis allé au magasin hier pour acheter des pommes' → Agent: 'Très bien! ✅ Perfect use of passé composé with être. Quick note: for a more natural flow, you could say \"faire des courses\" instead of \"acheter des pommes\" when talking about grocery shopping in general. New word: faire des courses (to go grocery shopping). 🎯 Streak: 12 days!'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron Jobs", "TTS"]
+    },
+    47: {
+        title: "Book Club Agent",
+        difficulty: "easy",
+        tags: ["skill", "memory", "cron", "group-chat"],
+        description: "Manages a book club in a group chat. Sets reading schedules, sends chapter reminders, facilitates discussions with thought-provoking questions, tracks member progress, and generates discussion summaries.",
+        features: [
+            "<strong>Schedule Management:</strong> Sets chapter-by-chapter reading timeline based on group pace.",
+            "<strong>Discussion Prompts:</strong> Posts thoughtful questions after each section to spark conversation.",
+            "<strong>Progress Tracking:</strong> Members check in with their progress. Agent tracks who's behind (gently).",
+            "<strong>Summary Notes:</strong> After each discussion, summarizes key insights and different perspectives."
+        ],
+        example: "Monday morning in group: '📚 Week 3 of \"Project Hail Mary\"! This week: Chapters 12-17. Discussion points for Wednesday: 1) How does Rocky's communication method change the power dynamic? 2) Would you have made the same decision at the end of Ch 16? 3 of 5 members are on track. @Priya, @Sam — need more time?'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron", "Group Chat"]
+    },
+    48: {
+        title: "Wikipedia Rabbit Hole",
+        difficulty: "easy",
+        tags: ["web-fetch", "skill", "memory"],
+        description: "Give it any topic and it builds a curated learning path — from beginner to advanced — using Wikipedia articles, YouTube videos, and web resources. Progressive depth that respects your time.",
+        features: [
+            "<strong>Learning Paths:</strong> Topic → structured curriculum from basics to advanced, with estimated time per level.",
+            "<strong>Curated Sources:</strong> Not just Wikipedia — finds the best articles, videos, and interactive resources.",
+            "<strong>Progressive Depth:</strong> Start shallow, go deeper on branches that interest you. Agent adapts the path.",
+            "<strong>Checkpoint Quizzes:</strong> Quick comprehension checks between levels."
+        ],
+        example: "'Teach me about quantum computing' → 'Level 1 (15 min): What is quantum computing? [Wikipedia summary + 5-min YouTube explainer]. Level 2 (30 min): Qubits vs classical bits, superposition, entanglement [interactive simulation link]. Level 3 (1 hour): Quantum gates and circuits... Ready to start? Or want me to adjust the depth?'",
+        techStack: ["Web Fetch", "OpenClaw Skills", "Memory"]
+    },
+    49: {
+        title: "Podcast Summarizer",
+        difficulty: "medium",
+        tags: ["web-fetch", "skill", "memory", "tts"],
+        description: "Drop a podcast link and the agent transcribes it, generates a structured summary with key points, extracts actionable insights and notable quotes, and saves it to your knowledge base.",
+        features: [
+            "<strong>Transcription:</strong> Converts audio to text (via API or service integration).",
+            "<strong>Structured Summary:</strong> Main topics, key arguments, actionable insights, and notable quotes — all organized.",
+            "<strong>Timestamp Markers:</strong> 'At 23:15, the guest discusses why startups should avoid premature scaling...'",
+            "<strong>Cross-Reference:</strong> Connects insights to your existing knowledge base and past podcast summaries."
+        ],
+        example: "'Summarize this Lex Fridman episode with Sam Altman' → '## Key Points\\n1. AGI timeline: Altman believes 3-5 years (23:15)\\n2. Safety approach: \"slow takeoff gives us time to course correct\" (41:02)\\n3. Surprising: admitted GPT-4 training cost was \"embarrassingly expensive\"\\n## Action Items (for you)\\n- Check OpenAI's new safety paper mentioned at 55:30\\n- Altman recommended \"The Beginning of Infinity\" book'",
+        techStack: ["Web Fetch", "Audio Processing", "Memory", "OpenClaw Skills"]
+    },
+    50: {
+        title: "Daily Coding Challenge",
+        difficulty: "easy",
+        tags: ["skill", "cron", "exec", "memory"],
+        description: "A personal LeetCode coach in your chat. Sends a coding problem every morning matched to your skill level, provides hints when you're stuck, reviews your solution for correctness and optimization, and tracks your progress.",
+        features: [
+            "<strong>Curated Problems:</strong> Selects based on your level and topics you're studying (DP, graphs, trees, etc.).",
+            "<strong>Hint System:</strong> Stuck? Ask for a hint — progressive hints from vague to specific.",
+            "<strong>Code Review:</strong> Submit your solution → agent tests it, analyzes time/space complexity, suggests optimizations.",
+            "<strong>Progress Tracking:</strong> Topics mastered, accuracy rates, streak tracking, weak area identification."
+        ],
+        example: "9 AM: 'Good morning! Today's challenge (Medium - Dynamic Programming): Given a staircase with n steps where you can take 1 or 2 steps at a time, how many distinct ways can you reach the top? 💡 Hint available if needed.' → You solve it → 'Correct! O(n) time, O(1) space — optimal. You've now solved 5/8 DP basics. Tomorrow: a harder variant with variable step sizes.'",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Shell Exec", "Memory"]
+    },
+    51: {
+        title: "Standup Bot",
+        difficulty: "easy",
+        tags: ["cron", "messaging", "skill", "group-chat"],
+        description: "Automates daily standups for remote teams. Collects updates via DM at a set time, compiles them into a formatted summary, and posts to the team channel. No more awkward syncs or forgotten updates.",
+        features: [
+            "<strong>Async Collection:</strong> DMs each team member at their preferred time. Supports different timezones.",
+            "<strong>Structured Format:</strong> Yesterday / Today / Blockers — with optional custom fields.",
+            "<strong>Compiled Summary:</strong> Posts formatted team standup to the designated channel.",
+            "<strong>Blocker Alerts:</strong> If someone reports a blocker, notifies relevant team members immediately."
+        ],
+        example: "9 AM DM: 'Standup time! What did you do yesterday? What's planned today? Any blockers?' → Collects from all 5 members → Posts to #team: '📋 Daily Standup - Feb 16\\n\\n**Annu:** Yesterday: Fixed auth flow. Today: PR reviews. Blockers: None\\n**Raj:** Yesterday: Dashboard UI. Today: API integration. Blockers: Waiting on design specs from Priya...'",
+        techStack: ["Cron Jobs", "Messaging", "OpenClaw Skills"]
+    },
+    52: {
+        title: "Event Organizer Agent",
+        difficulty: "medium",
+        tags: ["skill", "cron", "messaging", "group-chat"],
+        description: "Plan and manage events entirely through chat. Handles RSVPs, sends reminders, runs polls for timing/venue, collects dietary preferences, and even gathers post-event feedback.",
+        features: [
+            "<strong>Event Creation:</strong> 'Plan a team dinner next Friday' → creates event, asks for details, starts RSVP collection.",
+            "<strong>Polling:</strong> Can't decide? Agent creates polls for date, venue, cuisine — tracks votes.",
+            "<strong>Reminders:</strong> Automated reminders at 1 week, 1 day, and 2 hours before the event.",
+            "<strong>Post-Event:</strong> Sends feedback survey, compiles responses, suggests improvements for next time."
+        ],
+        example: "'Organize a birthday party for Raj' → 'On it! When were you thinking? I'll create a poll in the group.' → Creates poll → 'Saturday wins with 8 votes. Venue suggestions: 1) Raj's place (free), 2) Toit (budget: ₹800/person), 3) Park picnic (₹200/person). Dietary needs collected: 2 vegetarian, 1 no-gluten.'",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Messaging", "Group Chat"]
+    },
+    53: {
+        title: "Skill Swap Marketplace",
+        difficulty: "medium",
+        tags: ["skill", "memory", "group-chat", "messaging"],
+        description: "A community matchmaking system where members list skills they can teach and skills they want to learn. The agent matches compatible pairs, facilitates introductions, and helps schedule sessions.",
+        features: [
+            "<strong>Profile Building:</strong> 'I can teach Python and want to learn guitar' → adds to the matching pool.",
+            "<strong>Smart Matching:</strong> Pairs people with complementary skills. Considers timezone and availability.",
+            "<strong>Introductions:</strong> Sends personalized intro messages to matched pairs with suggested meeting times.",
+            "<strong>Session Tracking:</strong> Logs completed sessions, collects feedback, builds reputation scores."
+        ],
+        example: "'New match found! @Priya wants to learn React (you teach it) and she can teach UI/UX design (you wanted to learn). She's free Tue/Thu evenings IST. Want me to introduce you two?'",
+        techStack: ["OpenClaw Skills", "Memory", "Group Chat", "Messaging"]
+    },
+    54: {
+        title: "Anonymous Feedback Collector",
+        difficulty: "easy",
+        tags: ["skill", "messaging", "memory"],
+        description: "Collects anonymous feedback from team members via DM, aggregates responses, identifies common themes, and delivers a summarized insights report to the manager — without revealing who said what.",
+        features: [
+            "<strong>Anonymous Collection:</strong> DMs each person, strips identity before storing responses.",
+            "<strong>Theme Extraction:</strong> Groups feedback into themes — workload, communication, management, culture.",
+            "<strong>Sentiment Analysis:</strong> Overall team mood score with trend tracking over time.",
+            "<strong>Actionable Report:</strong> Delivers prioritized insights: what's working, what needs attention, specific suggestions."
+        ],
+        example: "'Team Pulse Report (Feb): Overall sentiment: 7.2/10 (↑ from 6.8). Top themes: 1) Positive: Team collaboration improved since daily standups. 2) Concern: 3 people mentioned unclear project priorities. 3) Suggestion: More async communication, fewer meetings.'",
+        techStack: ["OpenClaw Skills", "Messaging", "Memory"]
+    },
+    55: {
+        title: "Trivia Night Host",
+        difficulty: "easy",
+        tags: ["skill", "group-chat", "cron", "memory"],
+        description: "Hosts scheduled trivia games in group chats with themed rounds, real-time scoring, streak bonuses, and persistent leaderboards. The ultimate group chat entertainment.",
+        features: [
+            "<strong>Themed Rounds:</strong> Science, pop culture, history, sports, tech — customizable categories.",
+            "<strong>Live Scoring:</strong> First correct answer gets max points. Speed bonuses. Streak multipliers.",
+            "<strong>Leaderboards:</strong> All-time rankings, weekly champions, category specialists.",
+            "<strong>Custom Questions:</strong> Add your own inside jokes and team-specific trivia."
+        ],
+        example: "'🎯 TRIVIA TIME! Round 3: Tech History. Q5: What year was the first iPhone released? You have 30 seconds...' → '@Raj: 2007 ✅ First answer! +100 pts (+25 streak bonus). @Priya: 2007 ✅ +75 pts. Standings: Raj 450, Annu 380, Priya 375.'",
+        techStack: ["OpenClaw Skills", "Group Chat", "Cron", "Memory"]
+    },
+    56: {
+        title: "Open Source Contribution Finder",
+        difficulty: "easy",
+        tags: ["web-fetch", "cron", "github-api", "skill"],
+        description: "Matches your skills and interests to good-first-issues across GitHub repos. Daily curated suggestions with context, difficulty assessment, and tips for getting your PR merged.",
+        features: [
+            "<strong>Skill Matching:</strong> Knows your tech stack, finds issues in languages and frameworks you use.",
+            "<strong>Daily Digest:</strong> 3-5 handpicked issues each morning with repository context and difficulty rating.",
+            "<strong>PR Tips:</strong> For each issue, provides guidance on the codebase and how to approach the fix.",
+            "<strong>Contribution Tracking:</strong> Tracks your open source contributions over time. Celebrates milestones."
+        ],
+        example: "'Daily OSS picks: 1) ⭐ openclaw/openclaw #234 — \"Add retry logic to web_fetch\" (TypeScript, good-first-issue, 3 comments). This matches your Node.js experience. 2) vercel/next.js #5678 — \"Fix hydration warning in dev mode\" (React, medium). You've contributed to Next before.'",
+        techStack: ["Web Fetch", "GitHub API", "Cron Jobs", "Memory"]
+    },
+    57: {
+        title: "Sleep Coach",
+        difficulty: "easy",
+        tags: ["skill", "cron", "memory"],
+        description: "Tracks your sleep patterns through simple chat check-ins, identifies factors affecting sleep quality, suggests improvements, and adjusts your morning routine based on how well you slept.",
+        features: [
+            "<strong>Sleep Logging:</strong> 'Slept at 12:30, woke at 7' → logged with quality rating.",
+            "<strong>Pattern Analysis:</strong> Correlates sleep quality with screen time, caffeine, exercise, and stress levels.",
+            "<strong>Recommendations:</strong> Personalized tips based on YOUR data, not generic advice.",
+            "<strong>Wind-Down Reminders:</strong> Evening cron: 'It's 10:30 PM — your best sleep nights start with winding down now.'"
+        ],
+        example: "'Weekly sleep report: Average 6.2 hours (target: 7.5). Best night: Wednesday (8 hours — you exercised that day and no screens after 10). Worst: Friday (4.5 hours — late coffee at 6 PM). Recommendation: your data shows caffeine after 3 PM costs you ~1.5 hours of sleep.'",
+        techStack: ["OpenClaw Skills", "Cron Jobs", "Memory"]
+    },
+    58: {
+        title: "Water Intake Tracker",
+        difficulty: "easy",
+        tags: ["cron", "skill", "memory"],
+        description: "Gentle hydration reminders throughout the day with intake tracking. Adjusts frequency based on weather, activity level, and how much you've already had. Simple but surprisingly effective.",
+        features: [
+            "<strong>Smart Reminders:</strong> Not every 30 minutes — adapts based on weather (hot = more frequent) and your intake so far.",
+            "<strong>Quick Logging:</strong> '💧' or 'drank a glass' → logged instantly.",
+            "<strong>Daily Progress:</strong> Visual progress bar toward your daily goal.",
+            "<strong>Weather Integration:</strong> Hot day? Increases target and reminder frequency automatically."
+        ],
+        example: "2 PM on a 35°C day: '💧 Hydration check! You've had 4 glasses today (target: 10, adjusted up from 8 due to heat). That's behind pace — try to have 2 more by 4 PM. Tip: keep a bottle at your desk.'",
+        techStack: ["Cron Jobs", "OpenClaw Skills", "Memory", "Weather API"]
+    },
+    59: {
+        title: "Meditation Guide",
+        difficulty: "medium",
+        tags: ["skill", "tts", "cron", "memory"],
+        description: "Personalized meditation sessions delivered via voice notes. Adapts technique (breathing, body scan, visualization) and duration to your current stress levels and available time.",
+        features: [
+            "<strong>Adaptive Sessions:</strong> 'I have 5 minutes and I'm stressed' → quick breathing exercise via TTS voice note.",
+            "<strong>Multiple Techniques:</strong> Guided breathing, body scans, loving-kindness, visualization, progressive relaxation.",
+            "<strong>Streak Tracking:</strong> Meditation streak with gentle encouragement. No guilt-tripping on missed days.",
+            "<strong>Mood Integration:</strong> If paired with mental health check-in, suggests meditation after low mood reports."
+        ],
+        example: "Evening cron: 'You mentioned a stressful day earlier. Want a quick wind-down? I have a 5-minute breathing exercise or a 10-minute body scan ready.' → Sends a TTS voice-guided session.",
+        techStack: ["TTS", "OpenClaw Skills", "Cron", "Memory"]
+    },
+    60: {
+        title: "Crypto Portfolio Tracker",
+        difficulty: "medium",
+        tags: ["web-fetch", "cron", "alerts", "memory"],
+        description: "Monitors your crypto holdings in real-time, alerts on significant price movements, tracks profit/loss, and provides market sentiment analysis. Your portfolio manager in your pocket.",
+        features: [
+            "<strong>Portfolio Dashboard:</strong> 'How's my portfolio?' → current value, 24h change, P&L per coin.",
+            "<strong>Price Alerts:</strong> 'Alert me if ETH drops below $2000' → instant notification when triggered.",
+            "<strong>Market Sentiment:</strong> Aggregates crypto news and social sentiment for your held coins.",
+            "<strong>DCA Reminders:</strong> If you dollar-cost-average, reminds you on schedule with current prices."
+        ],
+        example: "'Portfolio Update: Total: $12,340 (+3.2% today). BTC: $8,200 (+2.1%), ETH: $3,140 (+5.8%), SOL: $1,000 (-1.2%). 🔥 ETH breaking resistance at $3,100 — this is the level you said you'd take partial profits at. Want to set a sell alert?'",
+        techStack: ["Web Fetch", "Cron Jobs", "Memory", "Alerts"]
+    },
+    61: {
+        title: "Subscription Audit Agent",
+        difficulty: "easy",
+        tags: ["browser", "memory", "skill"],
+        description: "Scans your email for subscription confirmation and recurring charge notifications, builds a complete list of active subscriptions, flags unused ones, and helps you cancel what you don't need.",
+        features: [
+            "<strong>Auto-Discovery:</strong> Scans emails for 'subscription confirmed', 'payment received', 'renewal' patterns.",
+            "<strong>Usage Tracking:</strong> Cross-references with your actual usage — 'You're paying for Spotify but haven't opened it in 2 months.'",
+            "<strong>Cost Summary:</strong> Total monthly subscription cost with breakdown. 'You spend ₹4,200/month on 8 subscriptions.'",
+            "<strong>Cancel Assistance:</strong> Provides direct cancel links or walks you through the process."
+        ],
+        example: "'Subscription audit complete: 11 active subscriptions totaling ₹5,890/month (₹70,680/year!). Flagged for review: 1) Adobe CC ₹1,675/mo — last used 4 months ago. 2) Calm app ₹499/mo — never opened. 3) Extra iCloud storage ₹75/mo — only using 2GB of 50GB. Potential savings: ₹2,249/month.'",
+        techStack: ["Browser Automation", "Memory", "OpenClaw Skills"]
+    },
+    62: {
+        title: "Workout Planner",
+        difficulty: "medium",
+        tags: ["skill", "memory", "cron"],
+        description: "Generates personalized workout plans based on your goals, available equipment, and time. Tracks sets, reps, and weights via chat. Adjusts programming based on your progress and recovery.",
+        features: [
+            "<strong>Custom Plans:</strong> Muscle building, fat loss, endurance, or general fitness — tailored to your level.",
+            "<strong>Equipment Aware:</strong> Home gym with dumbbells? Full gym? Bodyweight only? Plans adapt.",
+            "<strong>Progress Tracking:</strong> 'Bench: 60kg x 8' → logged. Tracks progressive overload over weeks.",
+            "<strong>Recovery Management:</strong> Adjusts intensity based on reported soreness and sleep quality."
+        ],
+        example: "Morning cron: 'Today is Push Day! Workout: 1) Bench Press: 3x8 @ 62.5kg (up from 60kg last week — you hit all reps). 2) OHP: 3x10 @ 30kg. 3) Incline DB: 3x12 @ 14kg. 4) Lateral raises: 3x15. Estimated time: 45 min. You're on a 3-week consistency streak! 💪'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron Jobs"]
+    },
+    63: {
+        title: "Tax Prep Assistant",
+        difficulty: "hard",
+        tags: ["skill", "memory", "cron", "image"],
+        description: "Collects tax-relevant documents throughout the year, categorizes deductions, tracks income sources, estimates tax liability, and prepares filing data. When tax season comes, you're already ready.",
+        features: [
+            "<strong>Year-Round Collection:</strong> Forward receipts, investment statements, donation receipts anytime — agent files them.",
+            "<strong>Deduction Tracking:</strong> Knows tax-deductible categories for your country. Flags potential deductions you might miss.",
+            "<strong>Income Tracking:</strong> Aggregates salary, freelance, investment income from various sources.",
+            "<strong>Quarterly Estimates:</strong> For freelancers, estimates quarterly tax payments to avoid surprises.",
+            "<strong>Filing Prep:</strong> Generates organized summary with all figures ready for your tax return or CA."
+        ],
+        example: "'Q3 Tax Summary: Income: ₹4,50,000 (salary) + ₹1,20,000 (freelance). Deductions so far: 80C: ₹1,50,000 (maxed ✅), 80D: ₹18,000 (₹7,000 remaining). Estimated tax: ₹52,400. You have ₹32,000 in uncategorized receipts — want to review them?'",
+        techStack: ["OpenClaw Skills", "Memory", "Cron", "Image Analysis"]
+    },
+    64: {
+        title: "Collaborative Story Writer",
+        difficulty: "medium",
+        tags: ["skill", "group-chat", "memory"],
+        description: "Group chat storytelling where each person adds a paragraph and the agent maintains narrative continuity, adds plot twists, manages pacing, and ensures the story stays coherent and engaging.",
+        features: [
+            "<strong>Story Management:</strong> Tracks plot threads, character arcs, and world-building details.",
+            "<strong>Continuity:</strong> Catches contradictions — 'Wait, you said the sword was lost in chapter 2. Shall I fix this?'",
+            "<strong>Plot Twists:</strong> Optionally injects AI-generated twists to keep things interesting.",
+            "<strong>Story Export:</strong> Compiles the finished story into a formatted document with chapter breaks."
+        ],
+        example: "In group chat: Agent: 'Chapter 4 begins. The cave entrance looms ahead. @Annu, your character has the torch — what do you do?' → Annu writes a paragraph → Agent weaves it into the narrative, adds atmospheric details, and prompts the next writer.",
+        techStack: ["OpenClaw Skills", "Group Chat", "Memory"]
+    },
+    65: {
+        title: "Meme Generator",
+        difficulty: "easy",
+        tags: ["image", "web-search", "skill"],
+        description: "Describe a meme concept or reaction, and the agent finds the perfect template, adds your text, and delivers the image. Also suggests meme formats that fit your situation.",
+        features: [
+            "<strong>Template Matching:</strong> Describe the vibe → agent picks the right meme format.",
+            "<strong>Text Placement:</strong> Proper top/bottom text formatting for the chosen template.",
+            "<strong>Situation Memes:</strong> 'Make a meme about debugging at 3 AM' → picks format and writes text.",
+            "<strong>Trending Formats:</strong> Knows current popular formats and can use them appropriately."
+        ],
+        example: "'Make a meme about the build passing on first try' → Generates a Drake format: 'Nah: Testing the code / Yeah: It compiled, ship it' or a surprised Pikachu face with 'When your code works on the first try.'",
+        techStack: ["Image Processing", "Web Search", "OpenClaw Skills"]
+    },
+    66: {
+        title: "Music Discovery Agent",
+        difficulty: "medium",
+        tags: ["web-search", "memory", "cron"],
+        description: "Learns your music taste through ratings and listening history, searches for new releases and underground tracks, and delivers weekly curated playlists with Spotify/YouTube links.",
+        features: [
+            "<strong>Taste Profiling:</strong> Rate songs and artists → agent builds a detailed preference model.",
+            "<strong>New Release Radar:</strong> Tracks artists you like, alerts on new releases.",
+            "<strong>Discovery Mode:</strong> Finds artists similar to your favorites but outside your bubble.",
+            "<strong>Weekly Playlist:</strong> Cron delivers a 10-track playlist every Friday with why each was chosen."
+        ],
+        example: "'🎵 Your Friday Discover Mix: 1) \"Midnight City\" by M83 — matches your love of synth-wave. 2) \"Tadow\" by Masego — you liked FKJ, this is a collab. 3) \"Kyoto\" by Phoebe Bridgers — your indie rock sweet spot... [7 more with Spotify links]'",
+        techStack: ["Web Search", "Memory", "Cron Jobs"]
+    },
+    67: {
+        title: "Daily Creative Prompt",
+        difficulty: "easy",
+        tags: ["cron", "skill", "memory"],
+        description: "Sends a creative prompt every day — writing, art, music, photography — collects your submissions, and provides thoughtful feedback. Build a creative practice without the blank page anxiety.",
+        features: [
+            "<strong>Multi-Medium:</strong> Writing prompts, drawing challenges, photo assignments, music creation tasks.",
+            "<strong>Adaptive:</strong> Learns what types of prompts you engage with most and adjusts.",
+            "<strong>Feedback:</strong> Submit your work → agent provides constructive, specific feedback.",
+            "<strong>Portfolio:</strong> Tracks all your creations over time. Monthly showcase of your best work."
+        ],
+        example: "Morning: '📝 Today's prompt: Write a 100-word story where the last sentence contradicts the first. Theme: nostalgia.' → You submit → 'Love the twist! The opening line about \"the best summer\" contrasting with \"it never happened\" is haunting. The sensory details in the middle ground the reader. Suggestion: the word \"always\" in line 3 could be cut for tighter pacing.'",
+        techStack: ["Cron Jobs", "OpenClaw Skills", "Memory"]
+    },
+    68: {
+        title: "Voice Character Agent",
+        difficulty: "easy",
+        tags: ["tts", "skill"],
+        description: "An agent with switchable voice personas — pirate, Yoda, noir detective, Shakespearean — that maintains character while being genuinely helpful. Fun for storytelling, entertaining friends, or just making daily interactions more amusing.",
+        features: [
+            "<strong>Character Voices:</strong> Multiple TTS personas with distinct speaking styles.",
+            "<strong>Consistent Character:</strong> Stays in character across entire conversations, not just single messages.",
+            "<strong>Still Helpful:</strong> Gives actual useful information, just in character.",
+            "<strong>Custom Characters:</strong> Define your own character with voice, mannerisms, and catchphrases."
+        ],
+        example: "Pirate mode: 'Arrr, ye be askin' about the weather? The skies be clear as crystal waters, 28 degrees on the horizon. No storms in sight, so ye can safely venture out without yer rain coat, matey! ☠️' (TTS delivered in pirate voice)",
+        techStack: ["TTS", "OpenClaw Skills"]
+    },
+    69: {
+        title: "Time Capsule Agent",
+        difficulty: "easy",
+        tags: ["cron", "memory", "skill"],
+        description: "Write messages to your future self. The agent stores them securely and delivers them on the scheduled date — with context about what was happening in your life when you wrote it.",
+        features: [
+            "<strong>Future Messages:</strong> 'Send this to me in 6 months' → stored and scheduled with cron.",
+            "<strong>Context Preservation:</strong> Saves what you were working on, mood, major events at time of writing.",
+            "<strong>Surprise Deliveries:</strong> Option for random delivery — 'Send this sometime in the next year.'",
+            "<strong>Reflection Prompts:</strong> On delivery, asks how things turned out compared to what you predicted."
+        ],
+        example: "6 months later: '📬 Time Capsule from August 2025! You wrote: \"I just started learning Rust and it's kicking my ass. I bet in 6 months I'll either love it or have given up.\" Context: You were also starting the AgentForge project and had just moved to a new apartment. So... how did Rust go? 😄'",
+        techStack: ["Cron Jobs", "Memory", "OpenClaw Skills"]
+    },
+    70: {
+        title: "AI Radio DJ",
+        difficulty: "medium",
+        tags: ["tts", "cron", "web-search", "skill"],
+        description: "A scheduled agent that curates music recommendations and delivers them with DJ-style commentary via TTS. Like having your own personal radio show that plays exactly what you want to hear.",
+        features: [
+            "<strong>DJ Personality:</strong> Develops a consistent DJ persona with catchphrases and style.",
+            "<strong>Themed Shows:</strong> 'Monday Motivation Mix', 'Friday Wind-Down', 'Sunday Morning Jazz' — scheduled cron shows.",
+            "<strong>Commentary:</strong> TTS intros for each song — fun facts, why it was chosen, artist background.",
+            "<strong>Request Line:</strong> 'Play something upbeat for coding' → curates a set with DJ commentary."
+        ],
+        example: "Friday 6 PM TTS: 'Yoooo it's Friday! DJ Jarvis here with your Weekend Kickoff Mix. First up — this track's been blowing up on the indie scene — you loved Tame Impala so you're gonna vibe with this one. Here's Glass Animals with \"Heat Waves\"...' [Spotify link]",
+        techStack: ["TTS", "Cron Jobs", "Web Search", "Memory"]
+    }
+};
+
+let currentPanelId = null;
+
+function openPanel(id) {
+    const data = problems[id];
+    if (!data) return;
+    currentPanelId = id;
     
+    document.getElementById('panelNum').textContent = '#' + String(id).padStart(2, '0');
+    
+    const diffClass = data.difficulty === 'hard' ? 'diff-hard' : data.difficulty === 'medium' ? 'diff-medium' : 'diff-easy';
+    const diffLabel = data.difficulty.toUpperCase();
+    
+    let html = `<h2>${data.title}</h2><div class="panel-meta">`;
+    html += `<span class="pill ${diffClass}">${diffLabel}</span>`;
+    if (data.category) html += `<span class="pill" style="background:var(--surface2);color:var(--text-dim);border:1px solid var(--border);">${data.category}</span>`;
+    html += `</div>`;
+    
+    html += `<div class="section-title">Overview</div><p class="desc">${data.description}</p>`;
+    
+    if (data.features && data.features.length) {
+        html += `<div class="section-title">Key Features</div><ul>`;
+        data.features.forEach(f => html += `<li>${f}</li>`);
+        html += `</ul>`;
+    }
+    
+    if (data.example) {
+        html += `<div class="section-title">Example Interaction</div><div class="example-box">${data.example}</div>`;
+    }
+    
+    if (data.techStack && data.techStack.length) {
+        html += `<div class="section-title">Tech Stack</div><div class="tech-stack">`;
+        data.techStack.forEach(t => html += `<span class="tech-tag">${t}</span>`);
+        html += `</div>`;
+    }
+    
+    document.getElementById('panelBody').innerHTML = html;
+    document.getElementById('sidePanel').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+    document.getElementById('sidePanel').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+    currentPanelId = null;
+}
+
+function navigatePanel(dir) {
+    if (!currentPanelId) return;
+    let next = currentPanelId + dir;
+    if (next < 1) next = 70;
+    if (next > 70) next = 1;
+    openPanel(next);
+}
+
+function filterCards(difficulty, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
     document.querySelectorAll('.card').forEach(card => {
         if (difficulty === 'all' || card.dataset.diff === difficulty) {
             card.style.display = '';
@@ -703,6 +2015,12 @@ function filterCards(difficulty) {
         }
     });
 }
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePanel();
+    if (currentPanelId && e.key === 'ArrowRight') navigatePanel(1);
+    if (currentPanelId && e.key === 'ArrowLeft') navigatePanel(-1);
+});
 </script>
 
 </body>
