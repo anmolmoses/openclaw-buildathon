@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦞 OpenClaw Buildathon — Problem Statements</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a2e;
+            --border: #2a2a3e;
+            --text: #e4e4ef;
+            --text-dim: #8888a0;
+            --accent: #ff4d4d;
+            --accent2: #ff6b35;
+            --accent3: #ffd700;
+            --green: #00e676;
+            --blue: #448aff;
+            --purple: #b388ff;
+            --cyan: #18ffff;
+            --pink: #ff80ab;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            position: relative;
+            padding: 80px 40px 60px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255,77,77,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(255,107,53,0.06) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.05) rotate(2deg); }
+        }
+
+        .hero h1 {
+            position: relative;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .hero .subtitle {
+            position: relative;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+        }
+
+        .hero .badge {
+            position: relative;
+            display: inline-block;
+            padding: 8px 24px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px 40px;
+            position: relative;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 80px;
+        }
+
+        .category {
+            margin-bottom: 60px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            flex-shrink: 0;
+        }
+
+        .category-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .category-header .count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            background: var(--surface2);
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(255,77,77,0.1);
+        }
+
+        .card .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card .difficulty {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .diff-easy { background: rgba(0,230,118,0.15); color: var(--green); }
+        .diff-medium { background: rgba(255,215,0,0.15); color: var(--accent3); }
+        .diff-hard { background: rgba(255,77,77,0.15); color: var(--accent); }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .card p {
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .card .tag {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: var(--surface2);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bonus-section {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        .bonus-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bonus-section .bonus-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .bonus-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .bonus-item:hover {
+            border-color: var(--purple);
+            background: var(--surface2);
+        }
+
+        .bonus-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--purple);
+            min-width: 24px;
+            padding-top: 2px;
+        }
+
+        .bonus-item h4 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .bonus-item p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .bonus-cat-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyan);
+            margin: 32px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bonus-cat-header:first-child {
+            margin-top: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            padding: 8px 20px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(255,77,77,0.08);
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 40px 20px 30px; }
+            .container { padding: 0 20px 40px; }
+            .stats-bar { gap: 20px; flex-wrap: wrap; }
+            .cards { grid-template-columns: 1fr; }
+            .bonus-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>🦞 OpenClaw Buildathon</h1>
+    <p class="subtitle">70 problem statements to build the future of AI agents. Pick one. Ship it. Win.</p>
+    <span class="badge">February 2026 — clawhub.com</span>
+</div>
+
+<div class="stats-bar">
+    <div class="stat"><div class="num">20</div><div class="label">Featured Problems</div></div>
+    <div class="stat"><div class="num">50</div><div class="label">Bonus Ideas</div></div>
+    <div class="stat"><div class="num">7</div><div class="label">Categories</div></div>
+</div>
+
+<div class="container">
+
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCards('all')">All</button>
+        <button class="filter-btn" onclick="filterCards('easy')">🟢 Easy</button>
+        <button class="filter-btn" onclick="filterCards('medium')">🟡 Medium</button>
+        <button class="filter-btn" onclick="filterCards('hard')">🔴 Hard</button>
+    </div>
+
+    <!-- CATEGORY 1: Personal AI Agent -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(255,77,77,0.1);">🤖</div>
+            <div>
+                <h2>Personal AI Agent</h2>
+            </div>
+            <span class="count">4 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="hard">
+                <div class="number">#01 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>AI Life Copilot</h3>
+                <p>Build an agent that manages your calendar, emails, finances, and health goals through a single chat interface. It should proactively remind, suggest, and automate — not just respond.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">multi-channel</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#02 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Context-Aware Morning Briefing</h3>
+                <p>An agent that delivers a personalized daily briefing at your preferred time — weather, calendar, news topics you care about, unread emails, and tasks — adapting to your schedule and mood patterns.</p>
+                <div class="tags"><span class="tag">cron</span><span class="tag">web-search</span><span class="tag">skill</span></div>
+            </div>
+            <div class="card" data-diff="hard">
+                <div class="number">#03 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>AI Memory Palace</h3>
+                <p>A skill that gives your agent perfect long-term memory with semantic search, auto-categorization, and the ability to surface relevant past conversations contextually — like a second brain that actually works.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">RAG</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#04 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Relationship Manager</h3>
+                <p>An agent that tracks your relationships — birthdays, last conversations, shared interests — and proactively suggests reaching out, gift ideas, or conversation starters. A CRM for your personal life.</p>
+                <div class="tags"><span class="tag">memory</span><span class="tag">cron</span><span class="tag">contacts</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 2: Developer Tools -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(68,138,255,0.1);">⚡</div>
+            <div>
+                <h2>Developer Tools</h2>
+            </div>
+            <span class="count">3 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="hard">
+                <div class="number">#05 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>Git Autopilot</h3>
+                <p>An agent that monitors your repos, reviews PRs with real feedback, auto-fixes CI failures, suggests refactors, and can be told "ship it" to handle the entire merge-deploy pipeline via chat.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">exec</span><span class="tag">github-api</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#06 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Incident Response Bot</h3>
+                <p>A skill that monitors server health, detects anomalies, auto-diagnoses issues, and either fixes them or escalates with a clear RCA — all through your messaging app of choice.</p>
+                <div class="tags"><span class="tag">exec</span><span class="tag">cron</span><span class="tag">node</span></div>
+            </div>
+            <div class="card" data-diff="easy">
+                <div class="number">#07 <span class="difficulty diff-easy">EASY</span></div>
+                <h3>Documentation Generator</h3>
+                <p>Point it at a codebase and it generates beautiful, up-to-date documentation. Runs on cron to detect code changes and auto-update docs. Publishes to a hosted page.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">exec</span><span class="tag">canvas</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 3: Automation & Workflows -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(0,230,118,0.1);">🔄</div>
+            <div>
+                <h2>Automation & Workflows</h2>
+            </div>
+            <span class="count">3 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="hard">
+                <div class="number">#08 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>AI Zapier Killer</h3>
+                <p>Build a natural-language workflow engine on OpenClaw. "When someone emails me an invoice, extract the amount, log it to my spreadsheet, and send a thank you." No code, just words.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">browser</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#09 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Multi-Platform Social Manager</h3>
+                <p>An agent that drafts, schedules, and posts content across Twitter, LinkedIn, and Reddit. Analyzes engagement, suggests optimal posting times, and responds to comments — all from one chat.</p>
+                <div class="tags"><span class="tag">browser</span><span class="tag">cron</span><span class="tag">multi-channel</span></div>
+            </div>
+            <div class="card" data-diff="easy">
+                <div class="number">#10 <span class="difficulty diff-easy">EASY</span></div>
+                <h3>Smart Home Commander</h3>
+                <p>A skill that bridges OpenClaw to Home Assistant / smart devices. "Turn off the lights, set AC to 24, and start my sleep playlist" — all through WhatsApp or Telegram.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">node</span><span class="tag">API</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 4: Learning & Research -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(179,136,255,0.1);">📚</div>
+            <div>
+                <h2>Learning & Research</h2>
+            </div>
+            <span class="count">3 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="medium">
+                <div class="number">#11 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Research Paper Digester</h3>
+                <p>Feed it arxiv links or topics — it reads papers, extracts key findings, builds a knowledge graph, and gives you a weekly digest of breakthroughs in your field. Searchable memory across all papers.</p>
+                <div class="tags"><span class="tag">web-fetch</span><span class="tag">memory</span><span class="tag">cron</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#12 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Adaptive Tutor</h3>
+                <p>An AI tutor that creates personalized learning paths, generates practice problems, tracks your weak areas with spaced repetition, and quizzes you at optimal intervals via chat.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">cron</span></div>
+            </div>
+            <div class="card" data-diff="easy">
+                <div class="number">#13 <span class="difficulty diff-easy">EASY</span></div>
+                <h3>Pocket Debate Partner</h3>
+                <p>An agent that argues the opposite side of any position you take. Uses web search for real citations and evidence. Great for sharpening thinking and exploring ideas you'd never consider.</p>
+                <div class="tags"><span class="tag">web-search</span><span class="tag">skill</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 5: Community & Social -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(255,128,171,0.1);">👥</div>
+            <div>
+                <h2>Community & Social</h2>
+            </div>
+            <span class="count">3 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="hard">
+                <div class="number">#14 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>AI Dungeon Master</h3>
+                <p>A multi-player text RPG run entirely through a Discord/Telegram group. The agent manages game state, NPC dialogue, combat mechanics, maps, and persistent world — with real-time multiplayer support.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">multi-user</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#15 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Community Concierge</h3>
+                <p>An agent that onboards new Discord/Telegram members, answers FAQs from docs, moderates content, summarizes discussions, and generates weekly community digests — the ultimate community manager.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">web-fetch</span><span class="tag">cron</span></div>
+            </div>
+            <div class="card" data-diff="easy">
+                <div class="number">#16 <span class="difficulty diff-easy">EASY</span></div>
+                <h3>Group Expense Splitter</h3>
+                <p>A group chat agent that tracks shared expenses in real-time. "I paid ₹500 for dinner" — it logs, splits, tracks who owes whom, sends reminders, and generates monthly reports.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">group-chat</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 6: Health & Wellness -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(24,255,255,0.1);">🧘</div>
+            <div>
+                <h2>Health & Wellness</h2>
+            </div>
+            <span class="count">2 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="medium">
+                <div class="number">#17 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>AI Nutritionist</h3>
+                <p>Snap a photo of your meal → agent identifies food, estimates calories/macros, tracks your daily intake, suggests what to eat next to hit goals, and creates weekly meal plans with grocery lists.</p>
+                <div class="tags"><span class="tag">image</span><span class="tag">memory</span><span class="tag">cron</span></div>
+            </div>
+            <div class="card" data-diff="medium">
+                <div class="number">#18 <span class="difficulty diff-medium">MEDIUM</span></div>
+                <h3>Mental Health Check-in Agent</h3>
+                <p>A compassionate agent that does daily mood check-ins, tracks patterns over time, suggests coping strategies, detects concerning trends, and knows when to recommend professional help.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">memory</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 7: Finance & Productivity -->
+    <div class="category">
+        <div class="category-header">
+            <div class="category-icon" style="background: rgba(255,215,0,0.1);">💰</div>
+            <div>
+                <h2>Finance & Productivity</h2>
+            </div>
+            <span class="count">2 problems</span>
+        </div>
+        <div class="cards">
+            <div class="card" data-diff="hard">
+                <div class="number">#19 <span class="difficulty diff-hard">HARD</span></div>
+                <h3>Personal Finance Analyst</h3>
+                <p>Connect bank SMS/email alerts → agent categorizes spending, detects subscriptions you forgot about, projects monthly burn rate, suggests savings strategies, and alerts you before overspending.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">memory</span><span class="tag">cron</span></div>
+            </div>
+            <div class="card" data-diff="easy">
+                <div class="number">#20 <span class="difficulty diff-easy">EASY</span></div>
+                <h3>Meeting Minutes Agent</h3>
+                <p>Send a voice note or paste a transcript → agent generates structured minutes, action items, deadlines, and follow-up reminders. Tracks action item completion across meetings.</p>
+                <div class="tags"><span class="tag">skill</span><span class="tag">cron</span><span class="tag">tts</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BONUS 50 IDEAS -->
+    <div class="bonus-section">
+        <h2>⚡ 50 Bonus Ideas</h2>
+        <p class="bonus-subtitle">More concepts to spark inspiration. Mix, match, and make them yours.</p>
+
+        <div class="bonus-cat-header">🤖 Personal AI & Lifestyle</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">21</span><div><h4>Dream Journal Analyzer</h4><p>Log dreams via voice/text → agent finds patterns, recurring symbols, and emotional themes over time.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">22</span><div><h4>Wardrobe Stylist</h4><p>Photo your closet → agent suggests outfits based on weather, calendar events, and style preferences.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">23</span><div><h4>Travel Planner Agent</h4><p>Give it dates and budget → full itinerary with flights, hotels, activities, local tips, and real-time alerts.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">24</span><div><h4>Recipe Generator from Fridge Photos</h4><p>Snap your fridge → agent identifies ingredients and suggests recipes you can actually make right now.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">25</span><div><h4>Pet Care Assistant</h4><p>Track vet visits, medications, feeding schedules, and behavioral changes for your pets via chat.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">26</span><div><h4>Habit Streak Gamifier</h4><p>Like Solo Leveling but customizable — any habit system with leaderboards, multiplayer challenges, and rewards.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">27</span><div><h4>Personal Shopper Agent</h4><p>Tell it what you want → it searches deals across sites, compares prices, tracks price drops, alerts on sales.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">28</span><div><h4>Movie/Show Recommender</h4><p>Learns your taste over time, tracks what you've watched, and suggests with trailers and reviews.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">⚡ Developer & Engineering</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">29</span><div><h4>API Health Monitor</h4><p>Monitors your APIs, pings endpoints on cron, alerts via chat when latency spikes or errors occur.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">30</span><div><h4>Database Query Agent</h4><p>"How many users signed up last week?" → agent writes SQL, runs it safely, returns formatted results.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">31</span><div><h4>Log Analyzer & Alert System</h4><p>Watches log files, detects anomalies with pattern recognition, sends smart alerts with suggested fixes.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">32</span><div><h4>Dependency Vulnerability Scanner</h4><p>Scans your projects for outdated/vulnerable dependencies and auto-creates PRs with safe updates.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">33</span><div><h4>CLI Tool Builder</h4><p>Describe a CLI tool in natural language → agent generates, tests, and packages it. "Make me a CLI that converts CSV to JSON."</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">34</span><div><h4>Multi-Repo Changelog Generator</h4><p>Aggregates commits across repos, generates human-readable changelogs, posts to Slack/Discord on release.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">35</span><div><h4>Infrastructure as Chat</h4><p>Deploy, scale, and manage cloud infra through chat. "Spin up a 2-core instance on Hetzner with nginx."</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">36</span><div><h4>Code Review Coach</h4><p>Reviews your PRs not just for bugs, but teaches you WHY something is bad and how to improve.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">🔄 Automation & Integration</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">37</span><div><h4>Email Triage Agent</h4><p>Reads your inbox, categorizes by urgency, drafts responses, archives junk — you just approve or edit.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">38</span><div><h4>Cross-Platform Message Sync</h4><p>Forward important messages between platforms. A WhatsApp message can trigger a Slack alert or Discord post.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">39</span><div><h4>Invoice & Receipt Processor</h4><p>Forward receipts/invoices → auto-extracted, categorized, stored, and summarized for tax time.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">40</span><div><h4>Appointment Scheduler</h4><p>Share your availability link via chat. Agent handles back-and-forth scheduling without Calendly.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">41</span><div><h4>RSS Feed Curator</h4><p>Monitors RSS feeds, filters by your interests, and delivers a daily digest of only what matters.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">42</span><div><h4>File Organizer Agent</h4><p>Watches a folder (Downloads), auto-renames, categorizes, and moves files based on content analysis.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">43</span><div><h4>Web Scraping Orchestrator</h4><p>Natural language web scraping. "Get me all product prices from this page daily and alert if any drop 20%."</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">44</span><div><h4>Bookmark Brain</h4><p>Save links via chat → agent reads, summarizes, tags, and makes them searchable. Never lose a link again.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">📚 Learning & Knowledge</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">45</span><div><h4>Flashcard Generator</h4><p>Send notes/textbooks → agent generates Anki-style flashcards and quizzes you via chat on a schedule.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">46</span><div><h4>Language Learning Buddy</h4><p>Conversational language practice with grammar correction, vocabulary building, and daily challenges.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">47</span><div><h4>Book Club Agent</h4><p>Group reading tracker — chapters, discussions, quotes, and insights shared in a group chat on schedule.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">48</span><div><h4>Wikipedia Rabbit Hole</h4><p>Give it a topic → it builds a curated learning path with articles, videos, and quizzes. Progressive depth.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">49</span><div><h4>Podcast Summarizer</h4><p>Drop a podcast link → agent transcribes, summarizes key points, extracts action items and quotes.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">50</span><div><h4>Daily Coding Challenge</h4><p>Sends a LeetCode-style problem each morning, hints if stuck, reviews your solution, tracks progress.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">👥 Community & Collaboration</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">51</span><div><h4>Standup Bot</h4><p>Collects async standups from team members via DM, compiles and posts a formatted summary to the channel.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">52</span><div><h4>Event Organizer Agent</h4><p>Plan events via chat — RSVPs, reminders, polls for timing, venue suggestions, and post-event feedback.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">53</span><div><h4>Skill Swap Marketplace</h4><p>Match community members who want to teach/learn skills. Agent facilitates introductions and scheduling.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">54</span><div><h4>Anonymous Feedback Collector</h4><p>Agent collects anonymous feedback from team members, summarizes themes, and delivers insights privately.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">55</span><div><h4>Trivia Night Host</h4><p>Runs scheduled trivia games in group chats with scoring, leaderboards, and themed rounds.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">56</span><div><h4>Open Source Contribution Finder</h4><p>Matches your skills to good-first-issues across GitHub repos. Daily suggestions with context and difficulty.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">🧘 Health, Finance & Life</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">57</span><div><h4>Sleep Coach</h4><p>Tracks sleep patterns via check-ins, suggests improvements, adjusts your morning alarm/routine accordingly.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">58</span><div><h4>Water Intake Tracker</h4><p>Gentle reminders throughout the day, tracks intake, adjusts based on weather and activity level.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">59</span><div><h4>Meditation Guide</h4><p>Personalized meditation sessions via voice notes, adapting technique and duration to your stress levels.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">60</span><div><h4>Crypto Portfolio Tracker</h4><p>Monitors your holdings, alerts on significant moves, tracks P&L, and provides market sentiment analysis.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">61</span><div><h4>Subscription Audit Agent</h4><p>Scans your emails for subscription confirmations, lists all active subscriptions, and helps you cancel unused ones.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">62</span><div><h4>Workout Planner</h4><p>Generates workout plans based on goals/equipment, tracks sets/reps via chat, adjusts based on progress.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">63</span><div><h4>Tax Prep Assistant</h4><p>Collects documents throughout the year, categorizes deductions, estimates liability, and preps filing data.</p></div></div>
+        </div>
+
+        <div class="bonus-cat-header">🎨 Creative & Fun</div>
+        <div class="bonus-grid">
+            <div class="bonus-item"><span class="bonus-num">64</span><div><h4>Collaborative Story Writer</h4><p>Group chat storytelling — each person adds a paragraph, agent maintains continuity and adds plot twists.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">65</span><div><h4>Meme Generator</h4><p>Describe a meme concept → agent finds the right template, adds text, and delivers the image.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">66</span><div><h4>Music Discovery Agent</h4><p>Learns your taste, searches new releases and underground tracks, delivers weekly playlists with Spotify links.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">67</span><div><h4>Daily Creative Prompt</h4><p>Sends writing/art/music prompts daily, collects submissions, and gives thoughtful feedback.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">68</span><div><h4>Voice Character Agent</h4><p>An agent with distinct voice personas — pirate, Yoda, noir detective — that maintains character while being helpful.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">69</span><div><h4>Time Capsule Agent</h4><p>Write messages to your future self. Agent delivers them on the scheduled date with context from that period.</p></div></div>
+            <div class="bonus-item"><span class="bonus-num">70</span><div><h4>AI Radio DJ</h4><p>A scheduled agent that curates and "broadcasts" music recommendations with DJ-style commentary via TTS.</p></div></div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Built with 🦞 for the <strong>OpenClaw Buildathon 2026</strong></p>
+    <p style="margin-top: 8px;"><a href="https://docs.openclaw.ai">Docs</a> · <a href="https://clawhub.com">ClawHub</a> · <a href="https://discord.com/invite/clawd">Discord</a></p>
+</footer>
+
+<script>
+function filterCards(difficulty) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.querySelectorAll('.card').forEach(card => {
+        if (difficulty === 'all' || card.dataset.diff === difficulty) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
